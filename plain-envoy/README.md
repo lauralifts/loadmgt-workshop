@@ -19,16 +19,38 @@ Bring this environment up by running
 ## Envoy admin interface
 
 With the docker-compose cluster running, access [http://localhost:9901/help](http://localhost:9901/help).
-See documentation on the admin inteface [here](https://www.envoyproxy.io/docs/envoy/latest/operations/admin).
+See documentation on the admin inteeface [here](https://www.envoyproxy.io/docs/envoy/latest/operations/admin).
+
+## Envoy listeners
+HTTP on 9902, gRPC on 9903.
 
 ## Upstream
 
-Hardcoded to port 9092. 
+Hardcoded to port 9092 for HTTP, 9093 for gRPC.
 Serves HTTP on /.
-Exports counter for HTTP requests seen/served.
 
-configurable latency? configurable max parallelism? configurable port?
-todo add and env file
+TODO:
+* Export counters for requests seen/served.
+* Add config endpoint to control latency and parallelism
 
-todo all same for grpc
-todo add a status page with configs
+## Downstream
+
+Takes address of HTTP and gRPC test servers in env.
+Has /config endpoint - http://localhost:9094/config
+
+Config endpoint params can be used to update the config, e.g.
+
+```
+http://localhost:9094/config?http_rate=1&http_max_parallelism=10
+http://localhost:9094/config?grpc_rate=100&grpc_max_parallelism=2
+```
+
+TODO: export metric
+
+## Prometheus
+
+TODO
+
+## Grafana 
+
+TODO

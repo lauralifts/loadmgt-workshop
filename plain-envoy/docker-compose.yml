@@ -4,6 +4,7 @@ services:
     ports:
       - "9901:9901"
       - "9902:9902"
+      - "9903:9903"
     volumes:
       - ./envoy.yaml:/etc/envoy/envoy.yaml
   upstream:
@@ -13,3 +14,9 @@ services:
     ports:
       - "9092:9092"
       - "9093:9093"
+  downstream:
+    build: 
+      context: ../code/downstream
+      dockerfile: Dockerfile
+    ports:
+      - "9094:9094"

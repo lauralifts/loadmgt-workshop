@@ -1,0 +1,15 @@
+services:
+  envoy:
+    image: envoyproxy/envoy:v1.31-latest
+    ports:
+      - "9901:9901"
+      - "9902:9902"
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+  upstream:
+    build: 
+      context: ../code/upstream
+      dockerfile: Dockerfile
+    ports:
+      - "9092:9092"
+      - "9093:9093"

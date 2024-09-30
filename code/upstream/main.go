@@ -11,6 +11,9 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/sync/semaphore"
 	"google.golang.org/grpc"
 
@@ -21,6 +24,25 @@ var latency_msec = 0
 var parallelism = 1
 var sem = semaphore.NewWeighted(int64(parallelism))
 
+var (
+	http_requests_in = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "http_requests_in_total",
+		Help: "The total number of HTTP requests received",
+	})
+	grpc_requests_in = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "grpc_requests_in_total",
+		Help: "The total number of gRPC requests received",
+	})
+	http_requests_complete = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "http_requests_completed_total",
+		Help: "The total number of HTTP requests served",
+	})
+	grpc_requests_complete = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "grpc_requests_completed_total",
+		Help: "The total number of gRPC requests served",
+	})
+)
+
 type helloServer struct {
 	pb.UnimplementedGreeterServer
 }
@@ -30,15 +52,19 @@ func NewServer() *helloServer {
 }
 
 func (s *helloServer) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
+	grpc_requests_in.Inc()
 	sem.Acquire(context.TODO(), 1)
 	time.Sleep(time.Duration(latency_msec) * time.Millisecond)
+	grpc_requests_complete.Inc()
 	return &pb.HelloReply{Message: in.Name + " hello"}, nil
 }
 
 func hello(w http.ResponseWriter, req *http.Request) {
+	http_requests_in.Inc()
 	sem.Acquire(context.TODO(), 1)
 	time.Sleep(time.Duration(latency_msec) * time.Millisecond)
 	fmt.Fprintf(w, "hello\n")
+	http_requests_complete.Inc()
 }
 
 func main() {
@@ -63,6 +89,7 @@ func main() {
 		latency_msec = lat
 	}
 
+	http.Handle("/metrics", promhttp.Handler())
 	http.HandleFunc("/", hello)
 	fmt.Printf("Listening on port %s\n", port)
 	go http.ListenAndServe(":"+port, nil)

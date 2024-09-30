@@ -5,7 +5,6 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY *.go ./
-COPY ./upstream_proto/*.go ./upstream_proto/
 COPY .env ./
 
 EXPOSE 9092

@@ -14,7 +14,7 @@ import (
 	"golang.org/x/sync/semaphore"
 	"google.golang.org/grpc"
 
-	"loadmgt-workshop/upstream/upstream_proto"
+	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 )
 
 var latency_msec = 0
@@ -22,17 +22,17 @@ var parallelism = 1
 var sem = semaphore.NewWeighted(int64(parallelism))
 
 type helloServer struct {
-	upstream_proto.UnimplementedGreeterServer
+	pb.UnimplementedGreeterServer
 }
 
 func NewServer() *helloServer {
 	return &helloServer{}
 }
 
-func (s *helloServer) SayHello(ctx context.Context, in *upstream_proto.HelloRequest) (*upstream_proto.HelloReply, error) {
+func (s *helloServer) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
 	sem.Acquire(context.TODO(), 1)
 	time.Sleep(time.Duration(latency_msec) * time.Millisecond)
-	return &upstream_proto.HelloReply{Message: in.Name + "hello"}, nil
+	return &pb.HelloReply{Message: in.Name + " hello"}, nil
 }
 
 func hello(w http.ResponseWriter, req *http.Request) {
@@ -65,7 +65,7 @@ func main() {
 
 	http.HandleFunc("/", hello)
 	fmt.Printf("Listening on port %s\n", port)
-	go log.Fatal(http.ListenAndServe(":"+port, nil))
+	go http.ListenAndServe(":"+port, nil)
 
 	lis, err := net.Listen("tcp", ":"+grpc_port)
 	if err != nil {
@@ -75,7 +75,7 @@ func main() {
 	// Create a gRPC server object
 	s := grpc.NewServer()
 	// Attach the Greeter service to the server
-	upstream_proto.RegisterGreeterServer(s, NewServer())
+	pb.RegisterGreeterServer(s, NewServer())
 	// Serve gRPC Server
 	log.Println("Serving gRPC on port %s", grpc_port)
 	log.Fatal(s.Serve(lis))

@@ -29,8 +29,9 @@ HTTP on 9902, gRPC on 9903.
 Hardcoded to port 9092 for HTTP, 9093 for gRPC.
 Serves HTTP on /.
 
+Prometheus metrics: http://localhost:9092/metrics
+
 TODO:
-* Export counters for requests seen/served.
 * Add config endpoint to control latency and parallelism
 
 ## Downstream
@@ -45,7 +46,7 @@ http://localhost:9094/config?http_rate=1&http_max_parallelism=10
 http://localhost:9094/config?grpc_rate=100&grpc_max_parallelism=2
 ```
 
-TODO: export metric
+Prometheus metrics: http://localhost:9094/metrics
 
 ## Prometheus
 

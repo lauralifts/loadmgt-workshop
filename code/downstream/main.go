@@ -12,6 +12,9 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/time/rate"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -37,6 +40,17 @@ var http_server = ""
 var conf = config{}
 var confLock = sync.RWMutex{}
 
+var (
+	http_requests_made = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "http_requests_made_total",
+		Help: "The total number of HTTP requests made",
+	})
+	grpc_requests_made = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "grpc_requests_made_total",
+		Help: "The total number of gRPC requests made",
+	})
+)
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -47,6 +61,7 @@ func main() {
 	grpc_server = os.Getenv("GRPC_SERVER")
 	config_port := os.Getenv("CONFIG_PORT")
 
+	http.Handle("/metrics", promhttp.Handler())
 	http.HandleFunc("/config", configUpdate)
 	log.Printf("Listening on port %s\n", config_port)
 	go http.ListenAndServe(":"+config_port, nil)
@@ -96,6 +111,7 @@ func doGRPCReqsWorker(stop chan bool, rl *rate.Limiter) {
 
 	for len(stop) == 0 {
 		rl.Wait(context.TODO())
+		grpc_requests_made.Inc()
 		r, err := client.SayHello(context.TODO(), &pb.HelloRequest{Name: "load generator"})
 		if err != nil {
 			log.Printf("could not greet: %v", err)
@@ -107,6 +123,7 @@ func doGRPCReqsWorker(stop chan bool, rl *rate.Limiter) {
 func doHTTPReqsWorker(stop chan bool, rl *rate.Limiter) {
 	for len(stop) == 0 {
 		rl.Wait(context.TODO())
+		http_requests_made.Inc()
 		res, err := http.Get(http_server)
 		if err != nil {
 			log.Printf("Http request to %s errored - %+v", http_server, err)

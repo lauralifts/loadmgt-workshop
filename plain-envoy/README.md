@@ -31,8 +31,14 @@ Serves HTTP on /.
 
 Prometheus metrics: http://localhost:9092/metrics
 
-TODO:
-* Add config endpoint to control latency and parallelism
+Has /config endpoint - http://localhost:9092/config
+
+Config endpoint params can be used to update the config, e.g.
+
+```
+http://localhost:9094/config?http_rate=1&http_max_parallelism=10
+http://localhost:9094/config?grpc_rate=100&grpc_max_parallelism=2
+```
 
 ## Downstream
 

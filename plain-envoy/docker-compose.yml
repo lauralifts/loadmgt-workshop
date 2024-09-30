@@ -22,6 +22,7 @@ services:
       - 'grafana_storage:/var/lib/grafana'
       - "./grafana.ini:/etc/grafana/grafana.ini"
       - "./provisioning:/etc/grafana/provisioning"
+      - "./dashboards:/etc/grafana/dashboards"
   upstream:
     build: 
       context: ../code/upstream

@@ -36,8 +36,7 @@ Has /config endpoint - http://localhost:9092/config
 Config endpoint params can be used to update the config, e.g.
 
 ```
-http://localhost:9094/config?http_rate=1&http_max_parallelism=10
-http://localhost:9094/config?grpc_rate=100&grpc_max_parallelism=2
+http://localhost:9092/config?latency=10&parallelism=40
 ```
 
 ## Downstream

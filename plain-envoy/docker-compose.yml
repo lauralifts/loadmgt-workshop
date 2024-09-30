@@ -7,6 +7,12 @@ services:
       - "9903:9903"
     volumes:
       - ./envoy.yaml:/etc/envoy/envoy.yaml
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    ports:
+      - 9090:9090
   upstream:
     build: 
       context: ../code/upstream

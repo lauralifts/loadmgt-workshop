@@ -55,8 +55,8 @@ Prometheus metrics: http://localhost:9094/metrics
 
 ## Prometheus
 
-TODO
+See http://localhost:9090
 
 ## Grafana 
 
-TODO
+See http://localhost:3000

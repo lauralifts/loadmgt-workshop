@@ -17,6 +17,13 @@ Most of this workshop can be completed without writing code. Source code for the
 
 The final exercise involves using an Envoy custom ratelimiting plugin (again, in Golang). We provide both an incomplete outline version that you can complete yourself, and a fully-completed version, so it is possible for you to choose whether you want to write code or not. 
 
+## TODO envoy concepts and terminology
+
+Very brief intro to envoy
+Listeners, routes, clusters, filters
+Static and dynamic config
+Status page, metrics
+
 ## Sections
 
 Follow these in order.

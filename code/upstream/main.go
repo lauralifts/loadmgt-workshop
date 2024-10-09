@@ -66,6 +66,8 @@ func (s *helloServer) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.He
 	time.Sleep(wait)
 	semRef.Release(1)
 	grpc_requests_complete.Inc()
+
+	fmt.Printf("Sending greeting")
 	return &pb.HelloReply{Message: in.Name + " hello"}, nil
 }
 

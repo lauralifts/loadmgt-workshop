@@ -32,6 +32,7 @@ type config struct {
 	grpc_max_parallelism int
 	http_rate            int
 	http_max_parallelism int
+	hipri                bool
 	updatedFlag          bool
 }
 
@@ -56,6 +57,8 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	http.DefaultTransport.(*http.Transport).MaxIdleConnsPerHost = 10000
 
 	http_server = os.Getenv("HTTP_SERVER")
 	grpc_server = os.Getenv("GRPC_SERVER")
@@ -124,11 +127,23 @@ func doHTTPReqsWorker(stop chan bool, rl *rate.Limiter) {
 	for len(stop) == 0 {
 		rl.Wait(context.TODO())
 		http_requests_made.Inc()
+
+		url := http_server
+		confLock.RLock()
+		if conf.hipri {
+			url += "/hipri"
+		}
+		confLock.RUnlock()
+
 		res, err := http.Get(http_server)
 		if err != nil {
 			log.Printf("Http request to %s errored - %+v", http_server, err)
 		} else {
 			log.Printf("Http request to %s done, result code %d\n", http_server, res.StatusCode)
+		}
+
+		if res != nil {
+			res.Body.Close()
 		}
 	}
 }
@@ -138,6 +153,7 @@ func configUpdate(w http.ResponseWriter, req *http.Request) {
 	newGRPCParallelism := conf.grpc_max_parallelism
 	newHTTPRate := conf.http_rate
 	newGRPCRate := conf.grpc_rate
+	newHipri := conf.hipri
 
 	updateSeen := false
 
@@ -159,6 +175,12 @@ func configUpdate(w http.ResponseWriter, req *http.Request) {
 		newGRPCRate = val
 	}
 
+	bval, ok := getValBool(req, "hipri")
+	if ok {
+		updateSeen = true
+		newHipri = bval
+	}
+
 	val, ok = getVal(req, "http_rate")
 	if ok {
 		updateSeen = true
@@ -172,6 +194,7 @@ func configUpdate(w http.ResponseWriter, req *http.Request) {
 		conf.grpc_rate = newGRPCRate
 		conf.http_max_parallelism = newHTTPParallelism
 		conf.http_rate = newHTTPRate
+		conf.hipri = newHipri
 		confLock.Unlock()
 	}
 
@@ -195,4 +218,17 @@ func getVal(req *http.Request, param string) (int, bool) {
 		return 0, false
 	}
 	return val, true
+}
+
+func getValBool(req *http.Request, param string) (bool, bool) {
+	params, _ := url.ParseQuery(req.URL.RawQuery)
+	if len(params[param]) != 1 {
+		return false, false
+	}
+
+	if params[param][0] == "true" {
+		return true, true
+	}
+
+	return false, true
 }

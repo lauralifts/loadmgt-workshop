@@ -8,7 +8,7 @@ Bring this environment up by running
  docker-compose up --build
 ```
 
-## Basic request-based circuitbreaking config
+## Basic retry-based circuitbreaking config
 
 Envoy is set up in a similar way to the previous demo.
 
@@ -36,3 +36,4 @@ With 100 QPS sent this should consume the retry budget and cause the retry-based
 Restore the error rate to 0: http://localhost:9092/config?latency=1000&error_rate=0
 
 You should see the rate of 5xx responses drop on the graph, and the circuit breaker will close. 
+Again, you may need to restart the downstream container due to connection exhaustion issues.

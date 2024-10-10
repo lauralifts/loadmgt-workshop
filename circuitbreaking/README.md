@@ -53,9 +53,7 @@ priorities, retry budgets
 
  * [Basic request-based and connection based circuitbreaking](./demo-basic/README.md)
  * [Circuitbreaking on retries](./demo-retries/README.md)
-
- * priorities
- * noisy neighbours
+ * [Prioritising requests](./demo-prios/README.md)
 
 ## Useful Links
 todo prune 

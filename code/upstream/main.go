@@ -126,6 +126,7 @@ func main() {
 	http.Handle("/metrics", promhttp.Handler())
 	http.HandleFunc("/config", configUpdate)
 	http.HandleFunc("/", hello)
+	http.HandleFunc("/hipri", hello)
 	fmt.Printf("Listening on port %s\n", port)
 	go http.ListenAndServe(":"+port, nil)
 

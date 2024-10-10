@@ -34,6 +34,7 @@ As a result of this, connection limits can be exceeded temporarily.
 
 Circuitbreakers are enabled by default. 
 The default values are TODO
+https://www.envoyproxy.io/docs/envoy/latest/faq/load_balancing/disable_circuit_breaking#faq-disable-circuit-breaking
 
 Envoy's circuitbreaking doesn't attempt to be fair or have any QoS mechanism. 
 If two clients send load to an upstream, overloading it and triggering circuitbreaking, both clients 
@@ -50,12 +51,11 @@ priorities, retry budgets
 
 ## Demos TODO
 
- * simple requests http 1.1
- * simple connection
+ * [Basic request-based and connection based circuitbreaking](./demo-basic/README.md)
+ * [Circuitbreaking on retries](./demo-retries/README.md)
+
  * priorities
- * retries
  * noisy neighbours
- * envoy per client pool as qos
 
 ## Useful Links
 todo prune 

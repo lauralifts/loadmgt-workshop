@@ -21,7 +21,11 @@ static_resources:
               domains: ["*"]
               routes:
               - match: { prefix: "/" }
-                route: { cluster: some_http_service }
+                route:  
+                  cluster: some_http_service 
+                  retry_policy:
+                    retry_on: "5xx"
+                    num_retries: 3
           http_filters:
           - name: envoy.filters.http.router
             typed_config:
@@ -63,11 +67,23 @@ static_resources:
               socket_address:
                 address: upstream
                 port_value: 9092
+    circuit_breakers:
+      thresholds:
+      - priority: DEFAULT
+        max_connections: 1024
+        max_pending_requests: 1024
+        max_requests: 1024
+        max_retries: 10
+        track_remaining: true
   - name: some_grpc_service
     connect_timeout: 0.25s
     type: STRICT_DNS
     lb_policy: ROUND_ROBIN
-    http2_protocol_options: {} # enable HTTP2 protocol for grpc
+    typed_extension_protocol_options:
+      envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+        "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+        explicit_http_config:
+          http2_protocol_options: {}    
     load_assignment:
       cluster_name: some_grpc_service
       endpoints:

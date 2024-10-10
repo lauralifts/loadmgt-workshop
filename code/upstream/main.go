@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand/v2"
 	"net"
 	"net/http"
 	"net/url"
@@ -19,11 +20,14 @@ import (
 	"golang.org/x/sync/semaphore"
 	"google.golang.org/grpc"
 
+	"google.golang.org/grpc/codes"
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
+	"google.golang.org/grpc/status"
 )
 
 var latency_msec = 0
 var parallelism = 1
+var errorRate = 0.0
 var confLock sync.RWMutex
 var sem = semaphore.NewWeighted(int64(parallelism))
 
@@ -67,8 +71,13 @@ func (s *helloServer) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.He
 	semRef.Release(1)
 	grpc_requests_complete.Inc()
 
-	fmt.Printf("Sending greeting")
-	return &pb.HelloReply{Message: in.Name + " hello"}, nil
+	doErr := rand.Float64()
+	if doErr < errorRate {
+		return nil, status.Error(codes.Internal, "oops I did it again")
+	} else {
+		fmt.Printf("Sending greeting")
+		return &pb.HelloReply{Message: in.Name + " hello"}, nil
+	}
 }
 
 func hello(w http.ResponseWriter, req *http.Request) {
@@ -82,7 +91,13 @@ func hello(w http.ResponseWriter, req *http.Request) {
 	semRef.Acquire(context.TODO(), 1)
 	time.Sleep(wait)
 	semRef.Release(1)
-	fmt.Fprintf(w, "hello\n")
+
+	doErr := rand.Float64()
+	if doErr < errorRate {
+		w.WriteHeader(http.StatusInternalServerError)
+	} else {
+		fmt.Fprintf(w, "hello\n")
+	}
 	http_requests_complete.Inc()
 }
 
@@ -155,7 +170,12 @@ func configUpdate(w http.ResponseWriter, req *http.Request) {
 		latency_msec = newLatency
 	}
 
-	fmt.Fprintf(w, "Parallelism %d, latency %d milliseconds", parallelism, latency_msec)
+	newErrorRate, ok := getValFloat(req, "error_rate")
+	if ok {
+		errorRate = newErrorRate
+	}
+
+	fmt.Fprintf(w, "Parallelism %d, latency %d milliseconds, error rate %v", parallelism, latency_msec, errorRate)
 }
 
 func getVal(req *http.Request, param string) (int, bool) {
@@ -165,6 +185,21 @@ func getVal(req *http.Request, param string) (int, bool) {
 	}
 
 	val, err := strconv.Atoi(params[param][0])
+
+	if err != nil {
+		log.Printf("Can't parse new %s - %v", param, err)
+		return 0, false
+	}
+	return val, true
+}
+
+func getValFloat(req *http.Request, param string) (float64, bool) {
+	params, _ := url.ParseQuery(req.URL.RawQuery)
+	if len(params[param]) != 1 {
+		return 0, false
+	}
+
+	val, err := strconv.ParseFloat(params[param][0], 64)
 
 	if err != nil {
 		log.Printf("Can't parse new %s - %v", param, err)

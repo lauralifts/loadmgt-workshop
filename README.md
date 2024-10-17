@@ -29,8 +29,8 @@ Status page, metrics
 Follow these in order.
 
  * [Envoy Circuit Breaking](/circuitbreaking/README.md)
- * [Envoy Admission Control](/admissioncontrol/README.md)
  * [Envoy Adaptive Concurrency](/adaptiveconcurrency/README.md)
+ * [Envoy Admission Control](/admissioncontrol/README.md)
  * [Envoy Isolation and Ratelimiting](/isolation/README.md)
  * [How Envoy Adapts to Overload](/envoyoverload/README.md)
  * [Envoy Custom Plugins for Ratelimiting](/plugins/README.md) (in Golang)

@@ -23,6 +23,7 @@ What is the default behaviour - don't think this one is active by default, you h
 
 ## Demos TODO
 
+ * [Basic adaptive concurrency demo](./demo-basic-ac/README.md)
 Multiple upstreams, observe the impact of the minRTT window
 Healthchecks distorting minRTT
 Stats should be in the demos see config

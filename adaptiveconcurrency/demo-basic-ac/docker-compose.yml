@@ -5,6 +5,7 @@ services:
       - "9901:9901"
       - "9902:9902"
       - "9903:9903"
+      - "9904:9904"
     volumes:
       - ./envoy.yaml:/etc/envoy/envoy.yaml
   prometheus:
@@ -27,14 +28,21 @@ services:
     build: 
       context: ../../code/upstream
       dockerfile: Dockerfile
-    ports:
-      - "9092:9092"
-      - "9093:9093"
+    deploy:
+      mode: replicated
+      replicas: 3
+    environment:
+      GRADIENT_LATENCY: "true"
   downstream:
     build: 
       context: ../../code/downstream
       dockerfile: Dockerfile
     ports:
       - "9094:9094"
+  healthcheck_pinger:
+      build: 
+        context: ../../code/pinger
+        dockerfile: Dockerfile
+
 volumes:
   grafana_storage: {}

@@ -22,11 +22,6 @@ import (
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 )
 
-// config - why isn't updatedFlag getting reset
-// metrics
-// add metrics to upstream as well
-// instructions to run it - curl config etc
-
 type config struct {
 	grpc_rate            int
 	grpc_max_parallelism int

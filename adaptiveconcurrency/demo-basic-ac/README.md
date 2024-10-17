@@ -10,4 +10,7 @@ Bring this environment up by running
 
 ## Basic adaptive concurrency config
 
-todo
+todo describe configs
+todo observe effect by varying req rate
+todo observe that healthchecks aren't affected
+todo observe the minrtt calc... 

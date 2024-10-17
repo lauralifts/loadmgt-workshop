@@ -16,7 +16,7 @@ Envoy's implementation allows you to control any of the following parameters:
  * Max concurrent connections
  * Maximum number of automatic retries
 
-
+todo per-cluster or per-upstream host
 todo routes and priorities
 
 ## Limitations and Gotchas
@@ -43,17 +43,19 @@ will have the same proportion of their requests throttled, even if one client is
 Finally, Envoy circuitbreaking does not work well for custom protocols which multiplex multiple requests onto one
 connection. todo explain why
 
+todo should avoid circuitbreaking healthchecks?
+
 ## Configuration
 
 https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/circuit_breaker.proto#envoy-v3-api-msg-config-cluster-v3-circuitbreakers
 
 priorities, retry budgets
 
-## Demos TODO
-
+## Demos 
  * [Basic request-based and connection based circuitbreaking](./demo-basic/README.md)
  * [Circuitbreaking on retries](./demo-retries/README.md)
  * [Prioritising requests](./demo-prios/README.md)
+ todo multiple upstreams and clarify what is per cluster and what per host
 
 ## Useful Links
 todo prune 

@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
+	"github.com/paulbellamy/ratecounter"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -30,8 +31,14 @@ var parallelism = 1
 var errorRate = 0.0
 var confLock sync.RWMutex
 var sem = semaphore.NewWeighted(int64(parallelism))
+var gradient = false
+var counter = ratecounter.NewRateCounter(10 * time.Second)
 
 var (
+	healthchecks = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "healthchecks_total",
+		Help: "The total number of HTTP healthchecks completed",
+	})
 	http_requests_in = promauto.NewCounter(prometheus.CounterOpts{
 		Name: "http_requests_in_total",
 		Help: "The total number of HTTP requests received",
@@ -52,6 +59,56 @@ var (
 
 type helloServer struct {
 	pb.UnimplementedGreeterServer
+}
+
+func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	gl_str := os.Getenv("GRADIENT_LATENCY")
+	if gl_str == "true" {
+		gradient = true
+	}
+
+	port := os.Getenv("HTTP_PORT")
+	grpc_port := os.Getenv("GRPC_PORT")
+	pll_str := os.Getenv("PARALLELISM")
+
+	pll, ok := checkEnv(pll_str)
+	if ok {
+		parallelism = pll
+		sem = semaphore.NewWeighted(int64(parallelism))
+	}
+
+	lat_str := os.Getenv("LATENCY_MSEC")
+	lat, ok := checkEnv(lat_str)
+	if ok {
+		latency_msec = lat
+	}
+
+	http.Handle("/metrics", promhttp.Handler())
+	http.HandleFunc("/config", configUpdate)
+	http.HandleFunc("/", hello)
+	http.HandleFunc("/hipri", hello)
+	http.HandleFunc("/health", healthcheck)
+
+	fmt.Printf("Listening on port %s\n", port)
+	go http.ListenAndServe(":"+port, nil)
+
+	lis, err := net.Listen("tcp", ":"+grpc_port)
+	if err != nil {
+		log.Fatalln("Failed to listen:", err)
+	}
+
+	// Create a gRPC server object
+	s := grpc.NewServer()
+	// Attach the Greeter service to the server
+	pb.RegisterGreeterServer(s, NewServer())
+	// Serve gRPC Server
+	log.Println("Serving gRPC on port %s", grpc_port)
+	log.Fatal(s.Serve(lis))
 }
 
 func NewServer() *helloServer {
@@ -80,12 +137,37 @@ func (s *helloServer) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.He
 	}
 }
 
+func healthcheck(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "ok\n")
+	healthchecks.Inc()
+}
+
 func hello(w http.ResponseWriter, req *http.Request) {
+	counter.Incr(1)
 	http_requests_in.Inc()
 
 	confLock.RLock()
 	semRef := sem
 	wait := time.Duration(latency_msec) * time.Millisecond
+	if gradient {
+		if wait == 0 {
+			wait = 100 * time.Millisecond
+		}
+
+		// starts to increase latency after 20 qps
+		grad := float64(counter.Rate()) / float64(20) // multiply by half current qps
+		log.Printf("Grad is %f\n", grad)
+		if grad < 1 {
+			grad = 1
+		} else if grad > 10 {
+			grad = 10
+		}
+		log.Printf("Adjusted grad is %f\n", grad)
+
+		wait *= time.Duration(grad)
+		log.Printf("Gradient wait is %d\n", wait.Milliseconds())
+	}
+
 	confLock.RUnlock()
 
 	semRef.Acquire(context.TODO(), 1)
@@ -99,49 +181,6 @@ func hello(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "hello\n")
 	}
 	http_requests_complete.Inc()
-}
-
-func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	port := os.Getenv("HTTP_PORT")
-	grpc_port := os.Getenv("GRPC_PORT")
-	pll_str := os.Getenv("PARALLELISM")
-
-	pll, ok := checkEnv(pll_str)
-	if ok {
-		parallelism = pll
-		sem = semaphore.NewWeighted(int64(parallelism))
-	}
-
-	lat_str := os.Getenv("LATENCY_MSEC")
-	lat, ok := checkEnv(lat_str)
-	if ok {
-		latency_msec = lat
-	}
-
-	http.Handle("/metrics", promhttp.Handler())
-	http.HandleFunc("/config", configUpdate)
-	http.HandleFunc("/", hello)
-	http.HandleFunc("/hipri", hello)
-	fmt.Printf("Listening on port %s\n", port)
-	go http.ListenAndServe(":"+port, nil)
-
-	lis, err := net.Listen("tcp", ":"+grpc_port)
-	if err != nil {
-		log.Fatalln("Failed to listen:", err)
-	}
-
-	// Create a gRPC server object
-	s := grpc.NewServer()
-	// Attach the Greeter service to the server
-	pb.RegisterGreeterServer(s, NewServer())
-	// Serve gRPC Server
-	log.Println("Serving gRPC on port %s", grpc_port)
-	log.Fatal(s.Serve(lis))
 }
 
 func checkEnv(in string) (int, bool) {

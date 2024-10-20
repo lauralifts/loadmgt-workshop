@@ -14,7 +14,7 @@ Unlike circuit breaking, there isn't a concept of priority (todo: can this be co
 
 This one is good when you have a big fleet of client sidecar envoys, and when you want to be sensitive to increases in request failure rate.
 
-TODO think this one does failure only, can't react to increased latenc
+TODO think this one does failure only, can't react to increased latency
 
 ## Configuration
 
@@ -26,8 +26,7 @@ What is the default behaviour - don't think this one is active by default, you h
 
 * Plain client circuit breaking
 * Different levels of aggression
-* Combined with circuitbreaking? 
-* enabled flag - operating as passthru (presumably still with metrics)
+* enabled flag - operating as passthru (presumably still with metrics?) check
 
 ## Links
 

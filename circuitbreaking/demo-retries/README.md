@@ -25,6 +25,9 @@ The only difference here is that retries are enabled on the route used by the HT
 ```
 
 As before, there is a circuit breaker configured to open when there are 10 concurrent outstanding retries.
+This gives a mechanism for reducing traffic to upstreams when they are experiencing high error rates, which
+can often be the result of some transient problem. Avoiding a retry storm prevents a short-lived issue from 
+becoming a [metastable failure](https://charap.co/metastable-failures-in-the-wild/).
 
 ### Sending HTTP traffic
 

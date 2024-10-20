@@ -13,8 +13,6 @@ Bring this environment up by running
 Envoy is set up in a similar way to the previous demos, with the addition of a new route and a new priority-based
 circuitbreaking configuration.
 
-
-
 The config below allows more connections, pending requests, and outstanding retries to traffic that is 
 on a high priority route.
 
@@ -58,15 +56,22 @@ As usual, there is a [Grafana dashboard](http://localhost:3000/d/workshop/load-m
 
 In this example, we have two downstreams, one on port 9094 and one at 9095.
 
+### Upstream performance is degraded
+
 Let's make the upstream flaky and slow: http://localhost:9092/config?latency=1000&error_rate=0.1&parallelism=1000
+
+### Default priority traffic triggers circuit breaker to open
 
 Let's send some default priority HTTP traffic through Envoy.
 Use the config endpoint of our downstream load-generator program: [config - 1000 qps](http://localhost:9094/config?http_rate=1000&http_max_parallelism=1000)
 
 That should be sufficient to trip the default priority request circuit breaker: see this happen in the Grafana dash.
 
+### High priority requests still mostly get through
+
 Now let's try to make some high priority requests. http://localhost:9095/config?hipri=true&http_rate=100&http_max_parallelism=100
 
 We should see the hipri requests largely succeeding and more of the default priority requests being loadshed, as the default pririty circuit breaker opens.
 
 TODO make this clearer in the stats
+TODO fix the connections piling up issue?

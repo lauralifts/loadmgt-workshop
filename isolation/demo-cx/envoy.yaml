@@ -37,6 +37,7 @@ static_resources:
           stat_prefix: "cx_backend_rlimit"
           domain: backend
           failure_mode_deny: false
+          descriptors: 
           rate_limit_service:
             grpc_service:
               envoy_grpc:

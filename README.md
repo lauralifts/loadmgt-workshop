@@ -42,12 +42,18 @@ Grafana on [http://localhost:3000](http://localhost:3000).
 
 ## Sections
 
-Follow these in order.
-
+It is best to follow these in order, if possible.
 
 [Envoy Circuit Breaking](/circuitbreaking/README.md): this section demonstrates how Envoy's circuitbreaking can be used to avoid cascading failures, based on connection count, concurrent requests, or concurrent retries.
 
- * [Envoy Adaptive Concurrency](/adaptiveconcurrency/README.md)
- * [Envoy Admission Control](/admissioncontrol/README.md)
- * [Envoy Isolation and Ratelimiting](/isolation/README.md) TODO finish
- * [How Envoy Adapts to Overload](/envoyoverload/README.md) 
+[Envoy Adaptive Concurrency](/adaptiveconcurrency/README.md) is similar to circuitbreaking, but uses dynamic 
+measurements of upstream performance to determine when to shed load, rather than preconfigured limits.
+
+[Envoy Admission Control](/admissioncontrol/README.md) is Envoy's version of client-side throttling, which
+is particularly suitable in a service mesh scenario where there are a large number of Envoys running as sidecars with downstreams.
+
+[Envoy Isolation and Ratelimiting](/isolation/README.md) demonstrates Envoy's mechanisms for ratelimiting, both
+local and centralised.
+
+[How Envoy Adapts to Overload](/envoyoverload/README.md) shows some of the mechanisms that can be used to protect
+Envoy itself from performance degradation in the face of excessive load.

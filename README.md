@@ -44,7 +44,9 @@ Grafana on [http://localhost:3000](http://localhost:3000).
 
 Follow these in order.
 
- * [Envoy Circuit Breaking](/circuitbreaking/README.md)
+
+[Envoy Circuit Breaking](/circuitbreaking/README.md): this section demonstrates how Envoy's circuitbreaking can be used to avoid cascading failures, based on connection count, concurrent requests, or concurrent retries.
+
  * [Envoy Adaptive Concurrency](/adaptiveconcurrency/README.md)
  * [Envoy Admission Control](/admissioncontrol/README.md)
  * [Envoy Isolation and Ratelimiting](/isolation/README.md) TODO finish

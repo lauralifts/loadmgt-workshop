@@ -49,4 +49,3 @@ Follow these in order.
  * [Envoy Admission Control](/admissioncontrol/README.md)
  * [Envoy Isolation and Ratelimiting](/isolation/README.md) TODO finish
  * [How Envoy Adapts to Overload](/envoyoverload/README.md) 
- * [Envoy Custom Plugins for Ratelimiting](/plugins/README.md) (in Golang) TODO finish

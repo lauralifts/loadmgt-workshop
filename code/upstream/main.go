@@ -156,16 +156,12 @@ func hello(w http.ResponseWriter, req *http.Request) {
 
 		// starts to increase latency after 20 qps
 		grad := float64(counter.Rate()) / float64(20) // multiply by half current qps
-		log.Printf("Grad is %f\n", grad)
 		if grad < 1 {
 			grad = 1
 		} else if grad > 10 {
 			grad = 10
 		}
-		log.Printf("Adjusted grad is %f\n", grad)
-
 		wait *= time.Duration(grad)
-		log.Printf("Gradient wait is %d\n", wait.Milliseconds())
 	}
 
 	confLock.RUnlock()

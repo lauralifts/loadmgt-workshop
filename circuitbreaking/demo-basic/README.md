@@ -49,5 +49,6 @@ The downstreams continue to make requests, but Envoy will send 504s.
 If we restore the upstream to its normal performance, then the circruit breakers close and the requests flow again. 
 http://localhost:9092/config?latency=1&parallelism=1000
 
+TODO try fix this problem
 Note - if the downstreams can't connect it may be due to socket exhaustion (the code is intentionally written as a connection hog to demo some of Envoy's capabilities).
 Restart the downstream container in case of issues.

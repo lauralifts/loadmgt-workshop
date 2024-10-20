@@ -9,54 +9,25 @@ This isn't an exercise section - it's just a 'plain' Envoy setup with:
   * Grafana, with some pre-configured dashboards
 
 Copying this is the jumping-off point for each of the exercise sections.
+You can also use it to kick the tires on Envoy, or clone it to try something else.
 
 Bring this environment up by running 
 
 ```
- docker-compose up --build
+ docker-compose up --build -d
 ```
 
-## Envoy admin interface
+You can generate some HTTP traffic using the config endpoint of our downstream load-generator program: [config - 100 qps](http://localhost:9094/config?http_rate=100&http_max_parallelism=2000). This sends 100 requests per second to the upstream via Envoy.
 
-With the docker-compose cluster running, access [http://localhost:9901/help](http://localhost:9901/help).
-See documentation on the admin inteeface [here](https://www.envoyproxy.io/docs/envoy/latest/operations/admin).
+Prometheus will be available on [http://localhost:9090](http://localhost:9090) and
+Grafana on [http://localhost:3000](http://localhost:3000).
 
-## Envoy listeners
-HTTP on 9902, gRPC on 9903.
+You can browse [the Envoy admin interface](http://localhost:9901) and the [Envoy statistics endpoint](http://localhost:9901/stats/prometheus).
 
-## Upstream
+## Shutting the environment down
 
-Hardcoded to port 9092 for HTTP, 9093 for gRPC.
-Serves HTTP on /.
-
-Prometheus metrics: http://localhost:9092/metrics
-
-Has /config endpoint - http://localhost:9092/config
-
-Config endpoint params can be used to update the config, e.g.
-
+There are a variety of ways to do this: use Docker Desktop if you have it installed, or run 
 ```
-http://localhost:9092/config?latency=10&parallelism=40
+docker-compose down
 ```
-
-## Downstream
-
-Takes address of HTTP and gRPC test servers in env.
-Has /config endpoint - http://localhost:9094/config
-
-Config endpoint params can be used to update the config, e.g.
-
-```
-http://localhost:9094/config?http_rate=1&http_max_parallelism=10
-http://localhost:9094/config?grpc_rate=100&grpc_max_parallelism=2
-```
-
-Prometheus metrics: http://localhost:9094/metrics
-
-## Prometheus
-
-See http://localhost:9090
-
-## Grafana 
-
-See http://localhost:3000
+in this directory.

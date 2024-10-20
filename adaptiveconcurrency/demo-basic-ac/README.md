@@ -11,6 +11,6 @@ Bring this environment up by running
 ## Basic adaptive concurrency config
 
 todo describe configs
-todo observe effect by varying req rate
+todo observe effect by varying req rate - increasing delay kicks in after 20 qps
 todo observe that healthchecks aren't affected
 todo observe the minrtt calc... 

@@ -17,7 +17,9 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/time/rate"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/status"
 
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 )
@@ -37,14 +39,14 @@ var conf = config{}
 var confLock = sync.RWMutex{}
 
 var (
-	http_requests_made = promauto.NewCounter(prometheus.CounterOpts{
+	http_requests_made = promauto.NewCounterVec(prometheus.CounterOpts{
 		Name: "http_requests_made_total",
 		Help: "The total number of HTTP requests made",
-	})
-	grpc_requests_made = promauto.NewCounter(prometheus.CounterOpts{
+	}, []string{"code"})
+	grpc_requests_made = promauto.NewCounterVec(prometheus.CounterOpts{
 		Name: "grpc_requests_made_total",
 		Help: "The total number of gRPC requests made",
-	})
+	}, []string{"code"})
 )
 
 func main() {
@@ -59,10 +61,52 @@ func main() {
 	grpc_server = os.Getenv("GRPC_SERVER")
 	config_port := os.Getenv("CONFIG_PORT")
 
+	hrstr := os.Getenv("HTTP_RATE")
+	if hrstr != "" {
+		res, err := strconv.Atoi(hrstr)
+		if err == nil {
+			conf.http_rate = res
+		} else {
+			log.Fatal(fmt.Sprintf("%v", err))
+		}
+	}
+
+	hrpll := os.Getenv("HTTP_MAX_PARALLELISM")
+	if hrpll != "" {
+		res, err := strconv.Atoi(hrpll)
+		if err == nil {
+			conf.http_max_parallelism = res
+		} else {
+			log.Fatal(fmt.Sprintf("%v", err))
+		}
+	}
+
+	grstr := os.Getenv("GRPC_RATE")
+	if grstr != "" {
+		res, err := strconv.Atoi(grstr)
+		if err == nil {
+			conf.grpc_rate = res
+		} else {
+			log.Fatal(fmt.Sprintf("%v", err))
+		}
+	}
+
+	grpll := os.Getenv("GRPC_MAX_PARALLELISM")
+	if grpll != "" {
+		res, err := strconv.Atoi(grpll)
+		if err == nil {
+			conf.grpc_max_parallelism = res
+		} else {
+			log.Fatal(fmt.Sprintf("%v", err))
+		}
+	}
+
 	http.Handle("/metrics", promhttp.Handler())
 	http.HandleFunc("/config", configUpdate)
 	log.Printf("Listening on port %s\n", config_port)
 	go http.ListenAndServe(":"+config_port, nil)
+
+	log.Printf("Config is %+v", conf)
 
 	doRequests()
 }
@@ -109,11 +153,23 @@ func doGRPCReqsWorker(stop chan bool, rl *rate.Limiter) {
 
 	for len(stop) == 0 {
 		rl.Wait(context.TODO())
-		grpc_requests_made.Inc()
-		r, err := client.SayHello(context.TODO(), &pb.HelloRequest{Name: "load generator"})
+		req := pb.HelloRequest{Name: "load generator"}
+		r, err := client.SayHello(context.TODO(), &req)
+
+		code := codes.OK
+
 		if err != nil {
 			log.Printf("could not greet: %v", err)
+			status, ok := status.FromError(err)
+			if ok {
+				code = status.Code()
+			} else {
+				log.Printf("Can't parse %v as grpc status", err)
+			}
 		}
+
+		grpc_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%d", code)}).Inc()
+
 		log.Printf("Greeting: %s\n", r.GetMessage())
 	}
 }
@@ -121,7 +177,6 @@ func doGRPCReqsWorker(stop chan bool, rl *rate.Limiter) {
 func doHTTPReqsWorker(stop chan bool, rl *rate.Limiter) {
 	for len(stop) == 0 {
 		rl.Wait(context.TODO())
-		http_requests_made.Inc()
 
 		url := http_server
 		confLock.RLock()
@@ -136,6 +191,8 @@ func doHTTPReqsWorker(stop chan bool, rl *rate.Limiter) {
 		} else {
 			log.Printf("Http request to %s done, result code %d\n", http_server, res.StatusCode)
 		}
+
+		http_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%s", res.StatusCode)}).Inc()
 
 		if res != nil {
 			res.Body.Close()

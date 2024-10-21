@@ -130,7 +130,7 @@ func (s *helloServer) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.He
 
 	doErr := rand.Float64()
 	if doErr < errorRate {
-		return nil, status.Error(codes.Internal, "oops I did it again")
+		return nil, status.Error(codes.Internal, "error from upstream")
 	} else {
 		fmt.Printf("Sending greeting")
 		return &pb.HelloReply{Message: in.Name + " hello"}, nil

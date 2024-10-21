@@ -3,7 +3,7 @@ services:
     image: envoyproxy/envoy:v1.31-latest
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 5
     volumes:
       - ./envoy.yaml:/etc/envoy/envoy.yaml
   prometheus:
@@ -35,7 +35,10 @@ services:
       dockerfile: Dockerfile
     deploy:
       mode: replicated
-      replicas: 10
+      replicas: 5
+    environment:
+      GRPC_RATE: 50
+      GRPC_MAX_PARALLELISM: 100
 
 volumes:
   grafana_storage: {}

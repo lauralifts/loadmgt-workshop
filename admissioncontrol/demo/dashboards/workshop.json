@@ -221,7 +221,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(envoy_http_downstream_rq_xx{envoy_http_conn_manager_prefix!=\"admin\"}[1m])",
+          "expr": "sum by (envoy_response_code_class) (rate(envoy_http_downstream_rq_xx{envoy_http_conn_manager_prefix!=\"admin\"}[1m]))",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -424,9 +424,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(grpc_requests_made_total[1m])",
+          "expr": "sum by (code)(rate(grpc_requests_made_total[1m]))",
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "code={{code}}",
           "range": true,
           "refId": "A"
         }
@@ -685,8 +685,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -780,8 +779,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -843,6 +841,6 @@
   "timezone": "",
   "title": "Load Management Workshop",
   "uid": "workshop",
-  "version": 6,
+  "version": 3,
   "weekStart": ""
 }

@@ -49,7 +49,7 @@ static_resources:
             typed_config:
               '@type': type.googleapis.com/envoy.extensions.filters.http.admission_control.v3.AdmissionControl
               enabled:
-                default_value: true
+                default_value: false
                 runtime_key: admission_control.enabled
               sampling_window: 60s
               sr_threshold:

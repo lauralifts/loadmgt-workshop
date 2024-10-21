@@ -57,21 +57,7 @@ be too low for some large-scale systems.
 
 ## Demos TODO
 
- * [Basic adaptive concurrency demo](./demo-basic-ac/README.md)
-    - multiple upstreams
-    - healthcheck endpoint excluded
-    - jitter and retries with retry predicate
-    - enabled on/off via runtime flag (curl post)
-
-Multiple upstreams, observe the impact of the minRTT window, observe impact of different capacities
- - long minRTT
-
-
-
-Healthchecks distorting minRTT
-Stats should be in the demos see config
-
-impact of different percentiles
+ * [Adaptive concurrency demo](./demo-ac/README.md)
 
 ## Links
 

@@ -31,6 +31,7 @@ static_resources:
               - match: { prefix: "/" }
                 route:  
                   cluster: some_http_service 
+                  priority: DEFAULT
                   timeout: 2s
                   retry_policy:
                     retry_on: "5xx"

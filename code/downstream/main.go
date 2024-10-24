@@ -191,7 +191,7 @@ func doHTTPReqsWorker(stop chan bool, rl *rate.Limiter) {
 			// todo inc a metric
 		} else {
 			log.Printf("Http request to %s done, result code %d\n", http_server, res.StatusCode)
-			http_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%s", res.StatusCode)}).Inc()
+			http_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%d", res.StatusCode)}).Inc()
 		}
 
 		if res != nil {

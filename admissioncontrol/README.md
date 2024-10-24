@@ -21,7 +21,7 @@ Unlike circuit breaking, there isn't a concept of different priority requests - 
 
 [Admission Control Config](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/http/admission_control/v3/admission_control.proto#envoy-v3-api-msg-extensions-filters-http-admission-control-v3-admissioncontrol)
 
-## Demoss
+## Demos
 
 See [demo](demo/README.md).
 

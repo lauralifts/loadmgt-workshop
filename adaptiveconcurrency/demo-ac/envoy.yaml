@@ -44,7 +44,7 @@ static_resources:
                   interval: 60s
                   request_count: 50
               enabled:
-                default_value: true
+                default_value: false
                 runtime_key: "adaptive_concurrency.enabled"
           - name: envoy.filters.http.router
             typed_config:
@@ -124,6 +124,11 @@ static_resources:
               socket_address:
                 address: upstream
                 port_value: 9092
+        - endpoint:
+            address:
+              socket_address:
+                address: upstream-slow
+                port_value: 9093
     circuit_breakers:
       thresholds:
       - priority: DEFAULT
@@ -149,4 +154,9 @@ static_resources:
             address:
               socket_address:
                 address: upstream
+                port_value: 9093
+        - endpoint:
+            address:
+              socket_address:
+                address: upstream-slow
                 port_value: 9093

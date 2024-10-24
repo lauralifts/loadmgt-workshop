@@ -55,7 +55,7 @@ Adaptive concurrency is not enabled by default: you must enable the filter for i
 However, when adaptive concurrency is in use, the `max_concurrency_limit` defaults to 1000. This might 
 be too low for some large-scale systems.
 
-## Demos TODO
+## Demos
 
  * [Adaptive concurrency demo](./demo-ac/README.md)
 

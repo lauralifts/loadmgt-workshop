@@ -139,6 +139,7 @@ func (s *helloServer) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.He
 
 func healthcheck(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "ok\n")
+	log.Printf("healthcheck received")
 	healthchecks.Inc()
 }
 

@@ -33,13 +33,13 @@ The HTTP cluster has the following circuit breaker config:
 Let's send some HTTP traffic through Envoy.
 Use the config endpoint of our downstream load-generator program: [100 qps and high parallelism](http://localhost:9094/config?http_rate=100&http_max_parallelism=2000)
 
-You should see in Grafana that the request-based CB is closed, and that there are many requests and connections left before the CB would close. 
+You should see in Grafana that the request-based CB is closed - i.e. requests are flowing - and that there are many requests and connections left before the CB would close. 
 
 ### Degraded upstream performance anc circuitbreaking
 
-Now, let's change the performance of the upstream: [100msec latency and parallelism 1](http://localhost:9092/config?latency=100&parallelism=1)
+Now, let's change the performance of the upstream significantly for the worse: [100msec latency and parallelism 1](http://localhost:9092/config?latency=100&parallelism=1)
 
-Now the server can only handle 10 qps, and we are sending 100 qps. 
+Now the server can only handle 10 qps, with each request taking 100ms to process, and we are sending 100 qps. 
 The connections and requests quickly pile up, and we quickly see the CBs close. 
 
 The downstreams continue to make requests, but Envoy will send 504s.

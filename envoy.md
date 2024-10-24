@@ -49,14 +49,14 @@ However, extensions (specifically, HTTP filters) exist to permit plugins to be w
 When running any demo in this workshop you will find Envoy's admin interface and status page at
 [http://localhost:9901](http://localhost:9901).
 
-See documentation on the admin interface [here](https://www.envoyproxy.io/docs/envoy/latest/operations/admin)
+See documentation on the admin interface [here](https://www.envoyproxy.io/docs/envoy/latest/operations/admin).
 
 You can try this out by running the [plain Envoy](./plain-envoy/README.md) non-demo.
 
 ## Envoy statistics
 
-When running any demo in this workshop you will find Envoy's exported metrics at
+When running most of the demos in this workshop you will find Envoy's exported metrics at
 [http://localhost:9901/stats/prometheus](http://localhost:9901/stats/prometheus).
 It can be useful to explore them here so you know what's available for graphing in Prometheus or Grafana.
 
-You can try this out by running the [plain Envoy](./plain-envoy/README.md) non-demo.
+You can also try this out by running the [plain Envoy](./plain-envoy/README.md) non-demo.

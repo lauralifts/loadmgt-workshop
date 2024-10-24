@@ -977,7 +977,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum by (code)(rate(http_requests_made_total{job=\"downstream\"}[1m]))",
+          "expr": "sum by (code)(rate(http_requests_made_total{priority=\"default\"}[1m]))",
           "instant": false,
           "legendFormat": "",
           "range": true,
@@ -1072,7 +1072,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum by (code)(rate(http_requests_made_total{job=\"downstream-hipri\"}[1m]))",
+          "expr": "sum by (code)(rate(http_requests_made_total{priority=\"high\"}[1m]))",
           "instant": false,
           "legendFormat": "",
           "range": true,
@@ -1139,8 +1139,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1235,8 +1234,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1330,8 +1328,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1425,8 +1422,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1492,6 +1488,6 @@
   "timezone": "",
   "title": "Load Management Workshop",
   "uid": "workshop",
-  "version": 5,
+  "version": 7,
   "weekStart": ""
 }

@@ -42,7 +42,7 @@ var (
 	http_requests_made = promauto.NewCounterVec(prometheus.CounterOpts{
 		Name: "http_requests_made_total",
 		Help: "The total number of HTTP requests made",
-	}, []string{"code"})
+	}, []string{"code", "priority"})
 	grpc_requests_made = promauto.NewCounterVec(prometheus.CounterOpts{
 		Name: "grpc_requests_made_total",
 		Help: "The total number of gRPC requests made",
@@ -190,8 +190,12 @@ func doHTTPReqsWorker(stop chan bool, rl *rate.Limiter) {
 			log.Printf("Http request to %s errored - %+v", url, err)
 			// todo inc a metric
 		} else {
+			priority := "default"
+			if conf.hipri {
+				priority = "high"
+			}
 			log.Printf("Http request to %s done, result code %d\n", http_server, res.StatusCode)
-			http_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%d", res.StatusCode)}).Inc()
+			http_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%d", res.StatusCode), "priority": priority}).Inc()
 		}
 
 		if res != nil {

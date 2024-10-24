@@ -58,12 +58,12 @@ In this example, we have two downstreams, one on port 9094 and one at 9095.
 
 ### Upstream performance is degraded
 
-Let's make the upstream flaky and slow: [1000ms latency and 10% error rate](http://localhost:9092/config?latency=1000&error_rate=0.1&parallelism=1000).
+Let's make the upstream flaky and slow: [1000ms latency and 10% error rate](http://localhost:9092/config?latency=500&error_rate=0.01&parallelism=1000).
 
 ### Default priority traffic triggers circuit breaker to open
 
 Let's send some default priority HTTP traffic through Envoy.
-Use the config endpoint of our downstream load-generator program: [1000 qps](http://localhost:9094/config?http_rate=1000&http_max_parallelism=1000).
+Use the config endpoint of our downstream load-generator program: [4000 qps](http://localhost:9094/config?http_rate=4000&http_max_parallelism=4000).
 
 That should be sufficient to trip the default priority request circuit breaker: see this happen in the Grafana dash.
 

@@ -12,10 +12,6 @@ Effective load management is a core aspect of the SRE role. In this workshop, pa
 
 Please bring a laptop to the workshop. Your laptop should have a working Docker and Docker Compose installation - see [Docker Docs](https://docs.docker.com/compose/install/) for installation instructions.
 
-Most of this workshop can be completed without writing code. Source code for the demo programs that drive load and which serve requests is available, and you might want to experiment with modifying that code. All of it is in Golang.
-
-The final exercise involves using an Envoy custom ratelimiting plugin (again, in Golang). We provide both an incomplete outline version that you can complete yourself, and a fully-completed version, so it is possible for you to choose whether you want to write code or not. 
-
 ## Envoy Proxy
 
 If you are not familiar with Envoy Proxy (or if you'd like a refresher), please spend a few minutes on

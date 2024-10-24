@@ -21,17 +21,20 @@ Some terminology you should know is `downstream` and `upstream`.
 Downstreams are basically clients, which initiate connections to servers (upstreams).
 However, the use of the terms downstream and upstream is preferred, as many upstreams are also downstreams of something else: the concept should always be seen as specific to the context of a given Envoy configuration.
 
-In this workshop we will only have one layer of downstreams and upstreams in each demo, for simplicity.
+In this workshop we will only have one layer of downstreams and upstreams in each demo, so it will be clear which services/clusters are meant.
 
 ### Listeners, filters, clusters
+
+Envoy configuration can be very complex, which is mainly a consequence of Envoy being flexible.
+Listeners, filters, and clusters are the core elements of Envoy configuration and are worth an introduction.
 
 `Listeners` listen for connections on some port. When a connection is received, it will be processed through
 a chain of `filters`, which can modify requests in various ways.
 
 Most Envoy configuration relates to filter configuration, and most of the demos in this workshop are primarily
-about configuring filters.
+about configuring filters (with the exception of circuitbreaking, which is done at the cluster level).
 
-`Clusters` manage sets of upstreams, plus loadbalancing configurations.
+`Clusters` manage sets of upstreams, plus optional loadbalancing configurations.
 
 ### Envoy plugins
 

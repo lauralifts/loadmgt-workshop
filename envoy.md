@@ -1,4 +1,4 @@
-# A very short introduction to Envoy Proxy
+# A Short Introduction to Envoy Proxy
 
 [Envoy Proxy](https://www.envoyproxy.io/) is an open-source proxy server (it fulfils the same role as HAProxy, Nginx, and similar tools). Envoy is highly flexible and configurable via its plugin architecture.
 
@@ -9,8 +9,9 @@ From the outset it was intended to have a role in both observability and in miti
 
 Envoy always has a static configuration file, which can be YAML or JSON (in this workshop we will be using 
 `envoy.yaml` as the configuration file). Envoy supports having most of its configuration supplied dynamically via 
-a control plane, so things can be changed centrally without needing to restart Envoy. However, we won't be using
-dynamic configuration here, for simplicity.
+a control plane - almost everything except the configuration for the control plane itself - so things can be 
+changed centrally without needing to restart Envoy. However, we won't be using
+dynamic configuration here, for simplicity's sake and to make the configurations clear.
 
 ## Concepts and Terminology
 
@@ -20,17 +21,21 @@ Some terminology you should know is `downstream` and `upstream`.
 Downstreams are basically clients, which initiate connections to servers (upstreams).
 However, the use of the terms downstream and upstream is preferred, as many upstreams are also downstreams of something else: the concept should always be seen as specific to the context of a given Envoy configuration.
 
-In this workshop we will only have one layer of downstreams and upstreams in each demo, for simplicity.
+In this workshop we will only have one layer of downstreams and upstreams in each demo, so it will be clear which services/clusters are meant.
 
 ### Listeners, filters, clusters
+
+Envoy configuration can be very complex, which is mainly a consequence of Envoy being flexible.
+Listeners, filters, and clusters are the core elements of Envoy configuration and are worth an introduction.
 
 `Listeners` listen for connections on some port. When a connection is received, it will be processed through
 a chain of `filters`, which can modify requests in various ways.
 
 Most Envoy configuration relates to filter configuration, and most of the demos in this workshop are primarily
-about configuring filters.
+about configuring filters (with the exception of circuitbreaking, which is done at the cluster level, and Envoy overload 
+management).
 
-`Clusters` manage sets of upstreams, plus loadbalancing configurations.
+`Clusters` manage sets of upstreams, plus optional loadbalancing configurations.
 
 ### Envoy plugins
 
@@ -44,14 +49,14 @@ However, extensions (specifically, HTTP filters) exist to permit plugins to be w
 When running any demo in this workshop you will find Envoy's admin interface and status page at
 [http://localhost:9901](http://localhost:9901).
 
-See documentation on the admin interface [here](https://www.envoyproxy.io/docs/envoy/latest/operations/admin)
+See documentation on the admin interface [here](https://www.envoyproxy.io/docs/envoy/latest/operations/admin).
 
 You can try this out by running the [plain Envoy](./plain-envoy/README.md) non-demo.
 
 ## Envoy statistics
 
-When running any demo in this workshop you will find Envoy's exported metrics at
+When running most of the demos in this workshop you will find Envoy's exported metrics at
 [http://localhost:9901/stats/prometheus](http://localhost:9901/stats/prometheus).
 It can be useful to explore them here so you know what's available for graphing in Prometheus or Grafana.
 
-You can try this out by running the [plain Envoy](./plain-envoy/README.md) non-demo.
+You can also try this out by running the [plain Envoy](./plain-envoy/README.md) non-demo.

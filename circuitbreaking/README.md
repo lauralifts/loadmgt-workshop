@@ -9,10 +9,11 @@ and upstreams are thus prevented from working through their load backlog and bec
 Traditionally, circuit breakers are either open or closed, based on the downstream service's perception of the 
 upstream service's recent performance (closed means traffic flows).
 
-[Envoy circuit breaking](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) allows you to control any of the following parameters:
+[Envoy circuit breaking](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) allows you to 
+do circuit breaking based on any of the following parameters:
  * Max concurrent outstanding requests
  * Max concurrent connections
- * Maximum number of automatic retries
+ * Maximum number of outstanding automatic retries
 
 ## Limitations and Gotchas
 
@@ -25,7 +26,7 @@ As a result of this, connection limits can be exceeded temporarily.
 
 Circuitbreakers are enabled by default: see [disabling circuit breaking](https://www.envoyproxy.io/docs/envoy/latest/faq/load_balancing/disable_circuit_breaking#faq-disable-circuit-breaking) for information including default values (which may be too small for large-scale installation). 
 
-Envoy's circuitbreaking doesn't attempt to be fair or have any QoS mechanism. 
+Envoy's circuitbreaking doesn't attempt to be fair or have any QoS mechanism other than separating requests into high or default priority. 
 If two clients send load to an upstream, overloading it and triggering circuitbreaking, both clients 
 will have the same proportion of their requests throttled, even if one client is sending the vast majority of the load - a noisy neighbour can seriously degrade the service for all.
 
@@ -45,7 +46,9 @@ https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/circuit_bre
  * [Circuitbreaking on retries](./demo-retries/README.md)
  * [Prioritising requests](./demo-prios/README.md)
 
-TODO: demo with multiple upstreams, to demonstrate clarify what is per cluster and what is per host
+TODO: demo with multiple upstreams, to demonstrate what is per cluster and what is per host
+TODO: noisy neighbour demo
+TODO: disabling circuitbreaking
 
 ## Useful Links
 

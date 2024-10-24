@@ -58,7 +58,7 @@ In this example, we have two downstreams, one on port 9094 and one at 9095.
 
 ### Upstream performance is degraded
 
-Let's make the upstream flaky and slow: [1000ms latency and 10% error rate](http://localhost:9092/config?latency=500&error_rate=0.01&parallelism=1000).
+Let's make the upstream flaky and slow: [500ms latency and 1% error rate](http://localhost:9092/config?latency=500&error_rate=0.01&parallelism=1000).
 
 ### Default priority traffic triggers circuit breaker to open
 
@@ -72,6 +72,3 @@ That should be sufficient to trip the default priority request circuit breaker: 
 Now let's try to make some high priority requests. [100 qps of high priority requests](http://localhost:9095/config?hipri=true&http_rate=100&http_max_parallelism=100).
 
 We should see the hipri requests largely succeeding and more of the default priority requests being loadshed, as the default pririty circuit breaker opens.
-
-TODO make this clearer in the stats
-TODO fix the connections piling up issue?

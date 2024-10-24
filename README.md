@@ -6,7 +6,7 @@ Effective load management is a core aspect of the SRE role. In this workshop, pa
 
 * Familiarity with a variety of Envoy load management features
 * Understanding when to use each form of load management, and the limitations of each
-* Practical experience with Envoy configuration, controls, status, and metrics
+* Practical experience with Envoy configuration, status, and metrics
 
 ## Prerequisites
 

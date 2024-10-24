@@ -26,15 +26,16 @@ Dashboards are provided for you, but you may want to extend them - feel free to.
 Grafana's UI is reasonably intuitive (ask for help if you need it).
 Some familiarity with Prometheus' query language, [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/) may help - the docs have a number of examples - again, ask if you need help.
 
+When running any demo, Prometheus will be available on [http://localhost:9090](http://localhost:9090) and
+Grafana on [http://localhost:3000](http://localhost:3000).
+
 ## Provided upstream/downstream code samples
 
 The demos use some simple clients and servers - you'll find the Go source code for these in the [code](./code) 
 directory here. The containers for the demos are built when running them, so you can change the source code and
 have the changes take effect in your demo (if you want to try something the demo doesn't do).
-The same upstreams/downstreams are used throughout the sequence of demos, so if you change something you could break other demos - if that's the case, you can just `git stash` your local changes and revert to the published code.
-
-When running any demo, Prometheus will be available on [http://localhost:9090](http://localhost:9090) and
-Grafana on [http://localhost:3000](http://localhost:3000).
+The same upstreams/downstreams are used throughout the sequence of demos, so if you change something you could break other demos 
+- if that's the case, you can just `git stash` your local changes and revert to the published code.
 
 ## Sections
 

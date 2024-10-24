@@ -26,7 +26,7 @@ As a result of this, connection limits can be exceeded temporarily.
 
 Circuitbreakers are enabled by default: see [disabling circuit breaking](https://www.envoyproxy.io/docs/envoy/latest/faq/load_balancing/disable_circuit_breaking#faq-disable-circuit-breaking) for information including default values (which may be too small for large-scale installation). 
 
-Envoy's circuitbreaking doesn't attempt to be fair or have any QoS mechanism. 
+Envoy's circuitbreaking doesn't attempt to be fair or have any QoS mechanism other than separating requests into high or default priority. 
 If two clients send load to an upstream, overloading it and triggering circuitbreaking, both clients 
 will have the same proportion of their requests throttled, even if one client is sending the vast majority of the load - a noisy neighbour can seriously degrade the service for all.
 

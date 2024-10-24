@@ -22,7 +22,7 @@ If you are not familiar with Envoy Proxy (or if you'd like a refresher), please 
 As well as Envoy, the demos in this workshop also use [Prometheus](https://prometheus.io/) for collecting 
 metrics, and [Grafana](https://grafana.com/docs/grafana/latest/introduction/) for dashboards.
 
-These are provided for you, but you may want to extend them. 
+Dashboards are provided for you, but you may want to extend them - feel free to. 
 Grafana's UI is reasonably intuitive (ask for help if you need it).
 Some familiarity with Prometheus' query language, [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/) may help - the docs have a number of examples - again, ask if you need help.
 

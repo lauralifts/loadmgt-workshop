@@ -46,7 +46,9 @@ https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/circuit_bre
  * [Circuitbreaking on retries](./demo-retries/README.md)
  * [Prioritising requests](./demo-prios/README.md)
 
-TODO: demo with multiple upstreams, to demonstrate clarify what is per cluster and what is per host
+TODO: demo with multiple upstreams, to demonstrate what is per cluster and what is per host
+TODO: noisy neighbour demo
+TODO: disabling circuitbreaking
 
 ## Useful Links
 

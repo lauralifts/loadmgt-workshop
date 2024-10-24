@@ -1,4 +1,4 @@
-# A very short introduction to Envoy Proxy
+# A Short Introduction to Envoy Proxy
 
 [Envoy Proxy](https://www.envoyproxy.io/) is an open-source proxy server (it fulfils the same role as HAProxy, Nginx, and similar tools). Envoy is highly flexible and configurable via its plugin architecture.
 

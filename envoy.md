@@ -9,8 +9,9 @@ From the outset it was intended to have a role in both observability and in miti
 
 Envoy always has a static configuration file, which can be YAML or JSON (in this workshop we will be using 
 `envoy.yaml` as the configuration file). Envoy supports having most of its configuration supplied dynamically via 
-a control plane, so things can be changed centrally without needing to restart Envoy. However, we won't be using
-dynamic configuration here, for simplicity.
+a control plane - almost everything except the configuration for the control plane itself - so things can be 
+changed centrally without needing to restart Envoy. However, we won't be using
+dynamic configuration here, for simplicity's sake and to make the configurations clear.
 
 ## Concepts and Terminology
 

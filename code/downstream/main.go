@@ -185,9 +185,9 @@ func doHTTPReqsWorker(stop chan bool, rl *rate.Limiter) {
 		}
 		confLock.RUnlock()
 
-		res, err := http.Get(http_server)
+		res, err := http.Get(url)
 		if err != nil {
-			log.Printf("Http request to %s errored - %+v", http_server, err)
+			log.Printf("Http request to %s errored - %+v", url, err)
 			// todo inc a metric
 		} else {
 			log.Printf("Http request to %s done, result code %d\n", http_server, res.StatusCode)

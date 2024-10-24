@@ -32,7 +32,8 @@ Listeners, filters, and clusters are the core elements of Envoy configuration an
 a chain of `filters`, which can modify requests in various ways.
 
 Most Envoy configuration relates to filter configuration, and most of the demos in this workshop are primarily
-about configuring filters (with the exception of circuitbreaking, which is done at the cluster level).
+about configuring filters (with the exception of circuitbreaking, which is done at the cluster level, and Envoy overload 
+management).
 
 `Clusters` manage sets of upstreams, plus optional loadbalancing configurations.
 

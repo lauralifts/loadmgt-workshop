@@ -9,7 +9,7 @@ scrape_configs:
    static_configs:
     - targets:
        - downstream:9094
-       - downstream-hipri:9095
+       - downstream-hipri:9094
  - job_name: envoy
    metrics_path: /stats/prometheus
    static_configs:

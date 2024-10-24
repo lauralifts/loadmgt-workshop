@@ -180,10 +180,12 @@ func doHTTPReqsWorker(stop chan bool, rl *rate.Limiter) {
 
 		url := http_server
 		confLock.RLock()
-		if conf.hipri {
+		hipri := conf.hipri
+		confLock.RUnlock()
+
+		if hipri {
 			url += "/hipri"
 		}
-		confLock.RUnlock()
 
 		res, err := http.Get(url)
 		if err != nil {
@@ -191,10 +193,10 @@ func doHTTPReqsWorker(stop chan bool, rl *rate.Limiter) {
 			// todo inc a metric
 		} else {
 			priority := "default"
-			if conf.hipri {
+			if hipri {
 				priority = "high"
 			}
-			log.Printf("Http request to %s done, result code %d\n", http_server, res.StatusCode)
+			log.Printf("Http request to %s done at priority %s, result code %d\n", url, priority, res.StatusCode)
 			http_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%d", res.StatusCode), "priority": priority}).Inc()
 		}
 

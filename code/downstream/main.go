@@ -163,12 +163,12 @@ func doGRPCReqsWorker(stop chan bool, rl *rate.Limiter) {
 			status, ok := status.FromError(err)
 			if ok {
 				code = status.Code()
+				grpc_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%d", code)}).Inc()
 			} else {
 				log.Printf("Can't parse %v as grpc status", err)
+				// todo inc a metric
 			}
 		}
-
-		grpc_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%d", code)}).Inc()
 
 		log.Printf("Greeting: %s\n", r.GetMessage())
 	}
@@ -188,11 +188,11 @@ func doHTTPReqsWorker(stop chan bool, rl *rate.Limiter) {
 		res, err := http.Get(http_server)
 		if err != nil {
 			log.Printf("Http request to %s errored - %+v", http_server, err)
+			// todo inc a metric
 		} else {
 			log.Printf("Http request to %s done, result code %d\n", http_server, res.StatusCode)
+			http_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%s", res.StatusCode)}).Inc()
 		}
-
-		http_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%s", res.StatusCode)}).Inc()
 
 		if res != nil {
 			res.Body.Close()

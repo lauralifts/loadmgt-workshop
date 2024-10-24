@@ -72,6 +72,3 @@ That should be sufficient to trip the default priority request circuit breaker: 
 Now let's try to make some high priority requests. [100 qps of high priority requests](http://localhost:9095/config?hipri=true&http_rate=100&http_max_parallelism=100).
 
 We should see the hipri requests largely succeeding and more of the default priority requests being loadshed, as the default pririty circuit breaker opens.
-
-TODO make this clearer in the stats
-TODO fix the connections piling up issue?

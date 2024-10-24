@@ -9,10 +9,11 @@ and upstreams are thus prevented from working through their load backlog and bec
 Traditionally, circuit breakers are either open or closed, based on the downstream service's perception of the 
 upstream service's recent performance (closed means traffic flows).
 
-[Envoy circuit breaking](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) allows you to control any of the following parameters:
+[Envoy circuit breaking](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) allows you to 
+do circuit breaking based on any of the following parameters:
  * Max concurrent outstanding requests
  * Max concurrent connections
- * Maximum number of automatic retries
+ * Maximum number of outstanding automatic retries
 
 ## Limitations and Gotchas
 

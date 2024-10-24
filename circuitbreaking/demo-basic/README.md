@@ -40,7 +40,7 @@ You should see in Grafana that the request-based CB is closed - i.e. requests ar
 Now, let's change the performance of the upstream significantly for the worse: [100msec latency and parallelism 1](http://localhost:9092/config?latency=100&parallelism=1)
 
 Now the server can only handle 10 qps, with each request taking 100ms to process, and we are sending 100 qps. 
-The connections and requests quickly pile up, and we quickly see the CBs close. 
+The connections and requests quickly pile up, and we quickly see the CBs close (in Grafana). 
 
 The downstreams continue to make requests, but Envoy will send 504s.
 

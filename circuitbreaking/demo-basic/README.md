@@ -35,7 +35,7 @@ Use the config endpoint of our downstream load-generator program: [100 qps and h
 
 You should see in Grafana that the request-based CB is closed - i.e. requests are flowing - and that there are many requests and connections left before the CB would close. 
 
-### Degraded upstream performance anc circuitbreaking
+### Degraded upstream performance and circuitbreaking
 
 Now, let's change the performance of the upstream significantly for the worse: [100msec latency and parallelism 1](http://localhost:9092/config?latency=100&parallelism=1)
 

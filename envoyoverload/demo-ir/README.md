@@ -63,10 +63,12 @@ Restart Envoy, and start sending gRPC requests again.
 
 Now you should see that stop accepting requests is at around 33%, and Envoy does shed some requests, and you can see this because the downstream requests are higher than upstream.
 
+TODO explain the http 200/grpc 14s
+
 ## Bypassing the overload manager
 
 Send HTTP requests.
-[http://localhost:9094/config?http_rate=100&http_max_parallelism=10](http://localhost:9094/config?http_rate=100&http_max_parallelism=10])
+[http://localhost:9094/config?http_rate=100&http_max_parallelism=10](http://localhost:9094/config?http_rate=100&http_max_parallelism=100)
 
 Wait a few seconds and these will appear on the Envoy graphs.
 Unlike the gRPC requests, you should notice that the HTTP requests are not throttled - the upstream request count is the same as the downstream.

@@ -32,7 +32,7 @@ The adaptive concurrency configuration is here:
                 runtime_key: "adaptive_concurrency.enabled"
 ```
 
-Let's start by sending [10 qps](http://localhost:9094/config?http_rate=3&http_max_parallelism=100) to the upstream.
+Let's start by sending [3 qps](http://localhost:9094/config?http_rate=3&http_max_parallelism=100) to the upstream.
 The upstream is configured to respond to requests at 100ms latency, and to increase its latency as a square of the number of current inflight requests.
 So at  qps, there should be little to no latency increase.
 
@@ -53,6 +53,9 @@ You should see:
 
 ## Enabling adaptive concurrency
 
+Go back to sending [3 qps](http://localhost:9094/config?http_rate=3&http_max_parallelism=100) to the upstream.
+
+
 Now enable adaptive concurrency by changing your `envoy.yaml`
 
 ```
@@ -67,8 +70,12 @@ You will immediately see adaptive concurrency kick in: Envoy will start sending 
 Less traffic makes it through to the upstreams, but some does. 
 Latency for successful requests drops.
 
-TODO explain MinRTT and Gradient here.
+You will see several things happening to the Adaptive Concurrency metrics shown on the dashboard.
 
+
+
+
+# Reducing the request rate and latency
 
 todo observe effect by varying req rate - increasing delay kicks in after 20 qps
 todo observe the minrtt calc... 

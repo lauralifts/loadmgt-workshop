@@ -124,11 +124,6 @@ static_resources:
               socket_address:
                 address: upstream
                 port_value: 9092
-        - endpoint:
-            address:
-              socket_address:
-                address: upstream-slow
-                port_value: 9093
     circuit_breakers:
       thresholds:
       - priority: DEFAULT
@@ -154,9 +149,4 @@ static_resources:
             address:
               socket_address:
                 address: upstream
-                port_value: 9093
-        - endpoint:
-            address:
-              socket_address:
-                address: upstream-slow
                 port_value: 9093

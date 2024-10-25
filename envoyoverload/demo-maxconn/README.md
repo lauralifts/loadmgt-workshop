@@ -41,10 +41,8 @@ There is no loadshedding (or only minor loadshedding)
 Now increase the parallelism of your requests to 1100:
 http://localhost:9094/config?grpc_rate=2000&grpc_max_parallelism=1100
 
-Now you should begin to see the number of requests made exceed the requests incoming, as some of the 
-worker threads on the downstreams cannot connect. 
-Note that these don't show up on the Envoy downstream request counter, because the throttling occurs before 
-the request is made (at the point of connection).
+Now you should begin to see connections being rejected. You won't see requests being rejected; the downstreams will
+just send requests over the connections that are available to them.
 
 However, you will see the graph of rejected downstream connections increase above zero, indicating that
 Envoy is performing throttling here.

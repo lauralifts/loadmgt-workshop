@@ -11,6 +11,7 @@ import (
 	"os"
 	"strconv"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -26,13 +27,14 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-var latency_msec = 0
-var parallelism = 1
+var latency_msec = int64(1)
+var parallelism = int64(1)
 var errorRate = 0.0
 var confLock sync.RWMutex
 var sem = semaphore.NewWeighted(int64(parallelism))
 var gradient = false
-var counter = ratecounter.NewRateCounter(10 * time.Second)
+var counter = ratecounter.NewRateCounter(10 * time.Second) // todo clean up?
+var ops atomic.Int64
 
 var (
 	healthchecks = promauto.NewCounter(prometheus.CounterOpts{
@@ -107,7 +109,7 @@ func main() {
 	// Attach the Greeter service to the server
 	pb.RegisterGreeterServer(s, NewServer())
 	// Serve gRPC Server
-	log.Println("Serving gRPC on port %s", grpc_port)
+	log.Printf("Serving gRPC on port %s\n", grpc_port)
 	log.Fatal(s.Serve(lis))
 }
 
@@ -149,27 +151,32 @@ func hello(w http.ResponseWriter, req *http.Request) {
 
 	confLock.RLock()
 	semRef := sem
-	wait := time.Duration(latency_msec) * time.Millisecond
-	if gradient {
-		if wait == 0 {
-			wait = 100 * time.Millisecond
-		}
-
-		// starts to increase latency after 20 qps
-		grad := float64(counter.Rate()) / float64(20) // multiply by half current qps
-		if grad < 1 {
-			grad = 1
-		} else if grad > 10 {
-			grad = 10
-		}
-		wait *= time.Duration(grad)
-	}
-
+	wait := latency_msec
 	confLock.RUnlock()
 
+	if gradient {
+
+		curOps := int64(float64(ops.Load()))
+		log.Printf("Current ops inflight is %dx\n", curOps)
+
+		if curOps == 0 {
+			curOps = 1
+		} else if curOps > 10 {
+			curOps = 10
+		}
+
+		log.Printf("Latency increase is %dx\n", curOps*curOps)
+
+		wait = latency_msec * curOps * curOps // wait time increases with square of current load
+	}
+
+	log.Printf("Upstream - serving request, latency is %d msec\n", wait)
+
+	ops.Add(1)
 	semRef.Acquire(context.TODO(), 1)
-	time.Sleep(wait)
+	time.Sleep(time.Duration(wait) * time.Millisecond)
 	semRef.Release(1)
+	ops.Add(-1)
 
 	doErr := rand.Float64()
 	if doErr < errorRate {
@@ -180,7 +187,7 @@ func hello(w http.ResponseWriter, req *http.Request) {
 	http_requests_complete.Inc()
 }
 
-func checkEnv(in string) (int, bool) {
+func checkEnv(in string) (int64, bool) {
 	if len(in) == 0 {
 		return 0, false
 	}
@@ -190,7 +197,7 @@ func checkEnv(in string) (int, bool) {
 		return 0, false
 	}
 
-	return conv, true
+	return int64(conv), true
 }
 
 func configUpdate(w http.ResponseWriter, req *http.Request) {
@@ -198,13 +205,13 @@ func configUpdate(w http.ResponseWriter, req *http.Request) {
 	defer confLock.Unlock()
 	newPll, ok := getVal(req, "parallelism")
 	if ok {
-		parallelism = newPll
+		parallelism = int64(newPll)
 		sem = semaphore.NewWeighted(int64(parallelism))
 	}
 
 	newLatency, ok := getVal(req, "latency")
 	if ok {
-		latency_msec = newLatency
+		latency_msec = int64(newLatency)
 	}
 
 	newErrorRate, ok := getValFloat(req, "error_rate")

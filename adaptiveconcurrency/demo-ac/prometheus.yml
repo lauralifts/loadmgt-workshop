@@ -5,7 +5,6 @@ scrape_configs:
    dns_sd_configs:
      - names:
        - 'upstream'
-       - 'upstream-slow'
        type: 'A'
        port: 9092
  - job_name: downstream

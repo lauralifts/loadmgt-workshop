@@ -24,16 +24,12 @@ services:
       - "./grafana.ini:/etc/grafana/grafana.ini"
       - "./provisioning:/etc/grafana/provisioning"
       - "./dashboards:/etc/grafana/dashboards"
-  upstream-slow:
+  upstream:
     build: 
       context: ../../code/upstream
       dockerfile: Dockerfile
     environment:
       GRADIENT_LATENCY: "true"
-  upstream:
-    build: 
-      context: ../../code/upstream
-      dockerfile: Dockerfile
   downstream:
     build: 
       context: ../../code/downstream

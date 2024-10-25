@@ -94,7 +94,7 @@ about 5% of the traffic, actually making it through to the upstream and receving
 
 ## Reduce error rate to 50% and modify rps_threshold
 
-Now we increase the error rate to 50%: [0% error rate and 1000ms latency](http://localhost:9092/config?latency=100&error_rate=0.5)
+Now we increase the error rate to 50%: [50% error rate and 100ms latency](http://localhost:9092/config?latency=100&error_rate=0.5)
 We see Envoy reduce the rate of throttling and allow more through to the upstreams. 
 
 Now let's experiment with modifying the `rps_threshold` parameter.

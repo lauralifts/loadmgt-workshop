@@ -1,0 +1,7 @@
+domain: backend
+descriptors:
+  - key: global
+    value: all
+    rate_limit:
+      requests_per_unit: 10000
+      unit: second

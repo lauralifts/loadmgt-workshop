@@ -52,15 +52,13 @@ https://www.envoyproxy.io/docs/envoy/v1.5.0/configuration/network_filters/rate_l
 ## Demos
  * [Local ratelimiting demo](./demo-local/README.md)
  * [Basic centralised ratelimiting demo](./demo-rq/README.md) 
+ * [Centralised ratelimiting plus auth](./demo-rlimit/README.md) 
 
- * ratelimit request demo with auth
-    complex ratelimit - tenant id x global operation limit
- * local plus global todo
-https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/local_rate_limit_filter
 
- * ratelimit actions todo
+ * ratelimit by ip
  https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/route/v3/route_components.proto#envoy-v3-api-msg-config-route-v3-ratelimit-action
 
+If you get to this point and have time available, try creating your own demo combining both local ratelimiting and centralised ratelimiting.
 
 ## Links
 

@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 5s
+scrape_configs:
+ - job_name: upstream
+   static_configs:
+    - targets:
+       - upstream:9092
+ - job_name: downstream
+   static_configs:
+    - targets:
+       - downstream:9094
+ - job_name: envoy
+   metrics_path: /stats/prometheus
+   static_configs:
+    - targets:
+       - envoy:9901 
+       

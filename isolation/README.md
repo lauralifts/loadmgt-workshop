@@ -52,20 +52,11 @@ https://www.envoyproxy.io/docs/envoy/v1.5.0/configuration/network_filters/rate_l
 ## Demos
  * [Local ratelimiting demo](./demo-local/README.md)
  * [Basic centralised ratelimiting demo](./demo-rq/README.md) 
-
- * ratelimit request demo with auth
-    complex ratelimit - tenant id x global operation limit
- * local plus global todo
-https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/local_rate_limit_filter
-
- * ratelimit actions todo
- https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/route/v3/route_components.proto#envoy-v3-api-msg-config-route-v3-ratelimit-action
-
+ * [Centralised ratelimiting by HTTP header](./demo-attrs/README.md) 
 
 ## Links
 
 https://www.envoyproxy.io/docs/envoy/v1.5.0/intro/arch_overview/global_rate_limiting
 https://serialized.net/2019/05/envoy-ratelimits/
 https://www.aboutwayfair.com/tech-innovation/understanding-envoy-rate-limits
-
-
+https://www.funnel-labs.io/2022/10/10/envoyproxy-3-sophisticated-rate-limiting/#setting-descriptor-maps-for-connections

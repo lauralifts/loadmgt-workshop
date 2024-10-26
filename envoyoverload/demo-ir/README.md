@@ -47,7 +47,8 @@ You should see all requests proceeding.
 
 Now, change the contents of `res.txt` to 0.9.
 You will have to also restart the Envoy container to pick that up (you can also just restart everything).
-[TODO explain why this doesn't pick up changes at runtime]
+
+Running `docker-compose restart envoy` will work.
 
 Start sending gRPC requests again.
 [http://localhost:9094/config?grpc_rate=1000&grpc_max_parallelism=1000](http://localhost:9094/config?grpc_rate=1000&grpc_max_parallelism=1000)
@@ -63,7 +64,7 @@ Restart Envoy, and start sending gRPC requests again.
 
 Now you should see that stop accepting requests is at around 33%, and Envoy does shed some requests, and you can see this because the downstream requests are higher than upstream.
 
-TODO explain the http 200/grpc 14s
+Note that loadshed gRPC requests will have HTTP 200 responses in the Envoy graphs - but the downstream graphs will show you ther gRPC status codes.
 
 ## Bypassing the overload manager
 

@@ -163,11 +163,13 @@ func doGRPCReqsWorker(stop chan bool, rl *rate.Limiter) {
 			status, ok := status.FromError(err)
 			if ok {
 				code = status.Code()
-				grpc_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%d", code)}).Inc()
+				grpc_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%s", code.String())}).Inc()
 			} else {
 				log.Printf("Can't parse %v as grpc status", err)
 				// todo inc a metric
 			}
+		} else {
+			grpc_requests_made.With(prometheus.Labels{"code": "OK"}).Inc()
 		}
 
 		log.Printf("Greeting: %s\n", r.GetMessage())

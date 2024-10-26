@@ -56,3 +56,13 @@ TODO finish demo.
 
 [How Envoy Adapts to Overload](/envoyoverload/README.md) shows some of the mechanisms that can be used to protect
 Envoy itself from performance degradation in the face of excessive load.
+
+## Finished the demos?
+
+Consider how you might combine the functions seen in each section to achieve your load-management goals.
+How would you go about monitoring your Envoys? What, if anything, should be your response when Envoy begins to shed load?
+
+## Want to go deeper into Envoy's capabilities?
+
+This workshop has focused purely on Envoy's load management capabilities. It can do a lot more!
+The [Envoy Examples repo](https://github.com/envoyproxy/examples) is a good place to start.

@@ -51,8 +51,7 @@ https://www.envoyproxy.io/docs/envoy/v1.5.0/configuration/network_filters/rate_l
 
 ## Demos
  * [Local ratelimiting demo](./demo-local/README.md)
- * [Ratelimiting connection demo](./demo-cx/README.md) todo finish this
-    - enabled, enforcing - https://www.envoyproxy.io/docs/envoy/v1.5.0/configuration/http_filters/rate_limit_filter#config-http-filters-rate-limit
+ * [Basic centralised ratelimiting demo](./demo-rq/README.md) 
 
  * ratelimit request demo with auth
     complex ratelimit - tenant id x global operation limit

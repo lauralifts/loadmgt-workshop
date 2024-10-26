@@ -3,5 +3,5 @@ descriptors:
   - key: client
     value: foo
     rate_limit:
-      requests_per_unit: 10
+      requests_per_unit: 100
       unit: second

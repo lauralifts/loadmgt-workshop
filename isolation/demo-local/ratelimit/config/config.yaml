@@ -1,7 +1,0 @@
-domain: backend
-descriptors:
-  - key: client
-    value: foo
-    rate_limit:
-      requests_per_unit: 10
-      unit: second

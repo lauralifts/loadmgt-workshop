@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+ - name: 'Load Workshop'
+   folder: 'Workshop'
+   folderUid: ''
+   type: file
+   allowUiUpdates: true
+   updateIntervalSeconds: 5
+   options:
+     path: /etc/grafana/dashboards/

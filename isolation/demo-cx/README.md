@@ -18,6 +18,12 @@ Grafana on [http://localhost:3000](http://localhost:3000).
 
 You can browse [the Envoy admin interface](http://localhost:9901) and the [Envoy statistics endpoint](http://localhost:9901/stats/prometheus).
 
+todo demo shadow mode
+
+http://localhost:6070/rlconfig
+
+
+
 ## Shutting the environment down
 
 There are a variety of ways to do this: use Docker Desktop if you have it installed, or run 

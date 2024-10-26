@@ -34,10 +34,15 @@ static_resources:
       - name: envoy.rate_limit
         typed_config: 
           "@type": type.googleapis.com/envoy.extensions.filters.network.ratelimit.v3.RateLimit
-          stat_prefix: "cx_backend_rlimit"
+          stat_prefix: ingress_grpc_cx_rlimit
           domain: backend
           failure_mode_deny: false
-          descriptors: 
+          descriptors:
+          - entries:
+            - key: client
+              value: foo
+            - key: path
+              value: /foo/bar
           rate_limit_service:
             grpc_service:
               envoy_grpc:

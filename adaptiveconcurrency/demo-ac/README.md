@@ -72,9 +72,6 @@ Latency for successful requests drops.
 
 You will see several things happening to the Adaptive Concurrency metrics shown on the dashboard.
 
-
-
-
 # Reducing the request rate and latency
 
 todo observe effect by varying req rate - increasing delay kicks in after 20 qps

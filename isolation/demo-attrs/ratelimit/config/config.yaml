@@ -1,0 +1,19 @@
+domain: backend
+descriptors:
+  - key: level
+    value: free
+    rate_limit:
+      requests_per_unit: 10
+      unit: second
+
+  - key: level
+    value: paid
+    rate_limit:
+      requests_per_unit: 100
+      unit: second
+
+  - key: level
+    value: enterprise
+    rate_limit:
+      requests_per_unit: 1000
+      unit: second

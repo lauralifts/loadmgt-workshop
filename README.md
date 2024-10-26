@@ -45,14 +45,12 @@ It is best to follow these in order, if possible.
 
 [Envoy Adaptive Concurrency](/adaptiveconcurrency/README.md) is similar to circuitbreaking, but uses dynamic 
 measurements of upstream performance to determine when to shed load, rather than preconfigured limits.
-TODO finish demo.
 
 [Envoy Admission Control](/admissioncontrol/README.md) is Envoy's version of client-side throttling, which
 is particularly suitable in a service mesh scenario where there are a large number of Envoys running as sidecars with downstreams.
 
 [Envoy Isolation and Ratelimiting](/isolation/README.md) demonstrates Envoy's mechanisms for ratelimiting, both
 local and centralised.
-TODO finish demo.
 
 [How Envoy Adapts to Overload](/envoyoverload/README.md) shows some of the mechanisms that can be used to protect
 Envoy itself from performance degradation in the face of excessive load.

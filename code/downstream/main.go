@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -43,6 +44,10 @@ var (
 		Name: "http_requests_made_total",
 		Help: "The total number of HTTP requests made",
 	}, []string{"code", "priority"})
+	http_requests_by_level = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "http_requests_by_level",
+		Help: "The total number of HTTP requests made",
+	}, []string{"code", "level"})
 	grpc_requests_made = promauto.NewCounterVec(prometheus.CounterOpts{
 		Name: "grpc_requests_made_total",
 		Help: "The total number of gRPC requests made",
@@ -166,7 +171,6 @@ func doGRPCReqsWorker(stop chan bool, rl *rate.Limiter) {
 				grpc_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%s", code.String())}).Inc()
 			} else {
 				log.Printf("Can't parse %v as grpc status", err)
-				// todo inc a metric
 			}
 		} else {
 			grpc_requests_made.With(prometheus.Labels{"code": "OK"}).Inc()
@@ -189,17 +193,30 @@ func doHTTPReqsWorker(stop chan bool, rl *rate.Limiter) {
 			url += "/hipri"
 		}
 
-		res, err := http.Get(url)
+		level := "free"
+		ln := rand.Intn(10)
+		if ln > 6 {
+			level = "paid"
+		}
+		if ln > 8 {
+			level = "enterprise"
+		}
+
+		req, err := http.NewRequest("GET", url, nil)
+		req.Header.Set("x-level", level)
+
+		client := &http.Client{}
+		res, err := client.Do(req)
 		if err != nil {
 			log.Printf("Http request to %s errored - %+v", url, err)
-			// todo inc a metric
 		} else {
 			priority := "default"
 			if hipri {
 				priority = "high"
 			}
-			log.Printf("Http request to %s done at priority %s, result code %d\n", url, priority, res.StatusCode)
+			log.Printf("Http request to %s done at priority %s, level %s: result code %d\n", url, priority, level, res.StatusCode)
 			http_requests_made.With(prometheus.Labels{"code": fmt.Sprintf("%d", res.StatusCode), "priority": priority}).Inc()
+			http_requests_by_level.With(prometheus.Labels{"code": fmt.Sprintf("%d", res.StatusCode), "level": level}).Inc()
 		}
 
 		if res != nil {

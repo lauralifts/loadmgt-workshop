@@ -47,6 +47,9 @@ examples of this throughout the demos.
 It is best to follow these in order, if possible, but there aren't really any dependencies between sections.
 Clone this repo now onto your machine to run the demos:
 
+To get the most out of each demo, review the `envoy.yaml` and the relevant Envoy configurations, which 
+are linked from each section.
+
 ```
 git clone https://github.com/lauralifts/loadmgt-workshop.git
 ```
@@ -65,8 +68,10 @@ local and centralised.
 [How Envoy Adapts to Overload](/envoyoverload/README.md) shows some of the mechanisms that can be used to protect
 Envoy itself from performance degradation in the face of excessive load.
 
-## Finished the demos?
+## Finished the demos and have extra time?
 
+* Explore aspects of the configuration options that the demos didn't cover
+* Set up different topologies - more upstreams/downstreams, multiple levels of Envoy Proxy pools
 * Consider how you might combine the functions seen in each section to achieve your load-management goals.
 * How would you go about monitoring your Envoys for each setup? 
 * What, if anything, should be your response when Envoy begins to shed load?

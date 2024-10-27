@@ -126,7 +126,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(envoy_cluster_upstream_rq[1m])",
+          "expr": "rate(envoy_cluster_upstream_rq[10s])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -221,7 +221,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(envoy_http_downstream_rq_xx{envoy_http_conn_manager_prefix!=\"admin\"}[1m])",
+          "expr": "rate(envoy_http_downstream_rq_xx{envoy_http_conn_manager_prefix!=\"admin\"}[10s])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -519,7 +519,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(http_requests_made_total[1m])",
+          "expr": "rate(http_requests_made_total[10s])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -614,7 +614,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(grpc_requests_made_total[1m])",
+          "expr": "rate(grpc_requests_made_total[10s])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -721,7 +721,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(http_requests_in_total[1m])",
+          "expr": "rate(http_requests_in_total[10s])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -816,7 +816,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(grpc_requests_in_total[1m])",
+          "expr": "rate(grpc_requests_in_total[10s])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -910,7 +910,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(http_requests_completed_total[1m])",
+          "expr": "rate(http_requests_completed_total[10s])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -1004,7 +1004,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(grpc_requests_completed_total[1m])",
+          "expr": "rate(grpc_requests_completed_total[10s])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,

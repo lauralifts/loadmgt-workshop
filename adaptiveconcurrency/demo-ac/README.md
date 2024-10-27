@@ -64,30 +64,47 @@ Now enable adaptive concurrency by changing your `envoy.yaml`
 
 Run `docker-compose restart envoy` so that Envoy will pick up these changes.
 
-You will immediately see adaptive concurrency kick in: Envoy will start sending a lot of 503s downstream. 
-Less traffic makes it through to the upstreams, but some does. 
-Latency for successful requests drops.
+You will immediately see adaptive concurrency kick in: 
+ * Envoy will start sending a lot of 503s downstream. 
+ * Less traffic makes it through to the upstreams, but some does. 
+ * Latency for successful requests drops.
 
 You will see several things happening to the Adaptive Concurrency metrics shown on the dashboard.
+ * The adaptive concurrency limit, minRTT, gradient and sampleRTT metrics now have nonzero values
 
-# Reducing the request rate and latency
+However, you should not see any throttling occurring.
 
-todo observe effect by varying req rate - increasing delay kicks in after 20 qps
-todo observe the minrtt calc... 
-todo observe different upstream characteristics
+## Increase traffic again
 
-    - multiple upstreams
-    - healthcheck endpoint excluded
-    - jitter and retries with retry predicate
-    - enabled on/off via runtime flag (curl post)
+Send 50 requests per second: http://localhost:9094/config?http_rate=50&http_max_parallelism=100
+As before, latency will go through the roof.
 
-Multiple upstreams, observe the impact of the minRTT window, observe impact of different capacities
- - long minRTT
+You should also see:
+ * The adaptive concurrency limit drop sharply to about 3
+ * The minRTT and gradient metrics will change
+ * Envoy will start to throttle a lot of traffic with 503s - see the downstream requests by code 
 
-Healthchecks distorting minRTT
-Stats should be in the demos see config
+You will see that the sample RTT msecs changes every minute, as Envoy re-samples the latency. 
+You should see that the gradient and the adaptive concurrency limit increase when the sample RTT goes down,
+and vice-versa.
 
-impact of different percentiles
+## Reducing the request rate and latency
 
-Adding outlier detection
-https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier#arch-overview-outlier-detection
+Reduce the request rate again: http://localhost:9094/config?http_rate=3&http_max_parallelism=100
+You should see that Envoy stops throttling as much. 
+
+## Healthchecks
+
+This example includes a separate HTTP listener for healthchecks, and a simple program that
+pings the healthcheck listener. 
+These healthchecks are routed to a separate listener which does not include an adaptive concurrency filter.
+This is to make sure that healthcheck traffic - which is often very lightweight - does not skew the minRTT calculation. 
+Look at `envoy.yaml` and understand how this has been done.
+
+## Bring the demo down
+
+Run 
+
+```
+ docker-compose down
+```

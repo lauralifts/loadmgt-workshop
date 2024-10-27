@@ -63,12 +63,12 @@ descriptors:
 Bring this environment up by running 
 
 ```
- docker-compose up --build --remove-orphans -d
+ docker-compose up --build -d
 ```
 
 ## Generating HTTP traffic
 
-You can generate some traffic : [100 qps](http://localhost:9094/config?http_rate=100&http_max_parallelism=2000). 
+You can generate some traffic: http://localhost:9094/config?http_rate=100&http_max_parallelism=2000
 This sends 100 requests per second to the upstream via Envoy.
 
 As usual, open [Grafana](http://localhost:3000/d/workshop/load-management-workshop?orgId=1&refresh=5s).
@@ -77,7 +77,7 @@ You should observe that lots of `free` tier traffic is throttled, but no paid or
 
 ## Experiment with changing the ratelimits, or adding extra descriptors
 
-You can add more descriptors under `actions` in the `envoy.yaml` configurationm - see the [rate limit filter](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/rate_limit_filter)
+You can add more descriptors under `actions` in the `envoy.yaml` configuration - see the [rate limit filter](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/rate_limit_filter)
 docs.
 
 For example
@@ -94,7 +94,9 @@ For example
                   - {remote_address: {}}
 ```
 
-Restart envoy as usual - `docker-compose restart envoy` and observe the logs for the ratelimit service - `docker-compose logs ratelimit`
+Restart envoy as usual - `docker-compose restart envoy` and observe the logs for the ratelimit service.
+
+Either use the Docker Desktop UI or run `docker-compose logs ratelimit`
 to see what values the ratelimit service receives.
 
 Experiment with changing the the ratelimit configuration in `ratelimit/config/config.yaml`.

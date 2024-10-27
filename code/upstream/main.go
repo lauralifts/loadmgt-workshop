@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
-	"github.com/paulbellamy/ratecounter"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -33,7 +32,6 @@ var errorRate = 0.0
 var confLock sync.RWMutex
 var sem = semaphore.NewWeighted(int64(parallelism))
 var gradient = false
-var counter = ratecounter.NewRateCounter(10 * time.Second) // todo clean up?
 var ops atomic.Int64
 
 var (
@@ -146,7 +144,6 @@ func healthcheck(w http.ResponseWriter, req *http.Request) {
 }
 
 func hello(w http.ResponseWriter, req *http.Request) {
-	counter.Incr(1)
 	http_requests_in.Inc()
 
 	confLock.RLock()

@@ -25,7 +25,7 @@ And, of course, it supports the ratelimit APIs which Envoy Proxy uses.
 We often want to ratelimit based on application-level concepts (such as tenant ID, or subscription levels, 
 for example). However, this data is probably not on your incoming requests. A common pattern is to use the 
 [auth](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html) filter
-to add that data to the requests, prior to useing the ratelimit service. 
+to add that data as headers to the requests, prior to useing the ratelimit service. 
 
 For example, it is often necessary to look up metadata about tenant IDs based on bearer tokens.
 In general, any data that we do not trust the client to send is a good candidate for this pattern.
@@ -39,6 +39,7 @@ or can be used with centralised ratelimiting (to limit the load on the centralis
 
 Envoy also has the ability to perform decentralised quota-based ratelimiting, where each Envoy accepts
 an assigned quota configuration from a rate limiting service - see the [Envoy docs](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/other_features/global_rate_limiting#quota-based-rate-limiting).
+
 However, there is currently no open-source implementation of the rate limiting control plane.
 
 ## Configuration
@@ -46,8 +47,6 @@ However, there is currently no open-source implementation of the rate limiting c
 https://www.envoyproxy.io/docs/envoy/v1.5.0/configuration/http_filters/rate_limit_filter#config-http-filters-rate-limit
 
 https://www.envoyproxy.io/docs/envoy/v1.5.0/configuration/network_filters/rate_limit_filter#config-network-filters-rate-limit
-
-
 
 ## Demos
  * [Local ratelimiting demo](./demo-local/README.md)

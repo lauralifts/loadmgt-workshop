@@ -58,7 +58,7 @@ In this example, we have two downstreams, one on port 9094 and one at 9095.
 
 ### Upstream performance is degraded
 
-Let's make the upstream flaky and slow: [[500ms latency and 1% error rate](http://localhost:9092/config?latency=500&error_rate=0.01&parallelism=1000).](http://localhost:9092/config?latency=500&error_rate=0.01&parallelism=1000)
+Let's make the upstream flaky and slow: http://localhost:9092/config?latency=500&error_rate=0.01&parallelism=1000
 
 ### Default priority traffic triggers circuit breaker to open
 

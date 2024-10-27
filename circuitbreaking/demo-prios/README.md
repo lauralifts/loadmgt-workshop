@@ -58,20 +58,20 @@ In this example, we have two downstreams, one on port 9094 and one at 9095.
 
 ### Upstream performance is degraded
 
-Let's make the upstream flaky and slow: [500ms latency and 1% error rate](http://localhost:9092/config?latency=500&error_rate=0.01&parallelism=1000).
+Let's make the upstream flaky and slow: [[500ms latency and 1% error rate](http://localhost:9092/config?latency=500&error_rate=0.01&parallelism=1000).](http://localhost:9092/config?latency=500&error_rate=0.01&parallelism=1000)
 
 ### Default priority traffic triggers circuit breaker to open
 
 Let's send some default priority HTTP traffic through Envoy.
-Use the config endpoint of our downstream load-generator program: [4000 qps](http://localhost:9094/config?http_rate=4000&http_max_parallelism=4000).
+Use the config endpoint of our downstream load-generator program: http://localhost:9094/config?http_rate=4000&http_max_parallelism=4000
 
 That should be sufficient to trip the default priority request circuit breaker: see this happen in the Grafana dash.
 
 ### High priority requests still mostly get through
 
-Now let's try to make some high priority requests. [100 qps of high priority requests](http://localhost:9095/config?hipri=true&http_rate=100&http_max_parallelism=100).
+Now let's try to make some high priority requests http://localhost:9095/config?hipri=true&http_rate=100&http_max_parallelism=100
 
-We should see the hipri requests largely succeeding and more of the default priority requests being loadshed, as the default pririty circuit breaker opens.
+We should see the high priority requests largely succeeding and more of the default priority requests being loadshed, as the default pririty circuit breaker opens.
 
 ## Bring the demo down
 

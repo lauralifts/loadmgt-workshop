@@ -30,7 +30,7 @@ Bring this environment up by running
 
 Open [Grafana](http://localhost:3000/d/workshop/load-management-workshop?orgId=1&refresh=5s) and expand the Envoy row.
 
-Start sending gRPC requests: http://localhost:9094/config?grpc_rate=10&grpc_max_parallelism=10
+Start sending gRPC requests: http://localhost:9094/config?grpc_rate=1000&grpc_max_parallelism=1000
 
 You should see the graph of Envoy connections increase and level off at 1000 connections. You should see 
 an equal number of incoming requests to the upstreams as outgoing requests at the downstreams. 

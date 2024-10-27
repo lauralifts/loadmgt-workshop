@@ -28,8 +28,8 @@ Some familiarity with Prometheus' query language, [PromQL](https://prometheus.io
 
 Note that Grafana mounts a separate dashboards volume for each demo, so any custom dashboards won't carry over between demos.
 
-Also note that most of the displayed data are rates over 1 minute. Therefore, when you change something in your environment,
-it will usually take a minute or so for the graphs to fully reflect that. Prometheus scrapes everything at 5 second intervals,
+Also note that most of the displayed data are rates over 10 seconds. Therefore, when you change something in your environment,
+it will usually take 20 seconds or so for the graphs to fully reflect that. Prometheus scrapes everything at 5 second intervals,
 and the Grafana dashes are configured to refresh automatically every 5 seconds.
 
 When running any demo, Prometheus will be available on [http://localhost:9090](http://localhost:9090) and

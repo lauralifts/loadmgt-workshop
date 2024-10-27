@@ -9,7 +9,7 @@ Additionally, local ratelimiting can be used in conjunction with other forms of 
 Bring this environment up by running 
 
 ```
- docker-compose up --build --remove-orphans -d
+ docker-compose up --build -d
 ```
 
 Envoy has the following local ratelimit configuration for HTTP traffic:

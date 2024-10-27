@@ -47,7 +47,7 @@ As Twitter demonstrated in the recent past, this is a good way to have an outage
 
 ## Observing the ratelimit without enforcement
 
-You can generate some HTTP traffic using the config endpoint of our downstream load-generator program: [config - 5 qps](http://localhost:9094/config?http_rate=5&http_max_parallelism=50).
+You can generate some HTTP traffic using the config endpoint of our downstream load-generator program: http://localhost:9094/config?http_rate=5&http_max_parallelism=50
 
 As usual, open the [Grafana dashboard](http://localhost:3000/d/workshop/load-management-workshop?orgId=1&refresh=5s).
 You should see successful HTTP requests with no throttling applied yet. In the Envoy section you will see graphs showing
@@ -56,7 +56,7 @@ for how many requests the rate limit is enabled, and for how many it is enforced
 Rate limiting is enabled for all requests, but enforced for none.
 We can see from the `Rate Limit OK` and `Rate Limited Requests` graphs that if rate limiting were enabled, we would reject 3 requests per second.
 
-Increase the load to [50 qps](http://localhost:9094/config?http_rate=50&http_max_parallelism=100).
+Increase the load to 50 qps: http://localhost:9094/config?http_rate=50&http_max_parallelism=100
 
 You'll see the `Rate Limited Requests` graph increase to around 48 qps, but all requests will still succeed.
 

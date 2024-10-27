@@ -44,7 +44,18 @@ The connections and requests quickly pile up, and we quickly see the CBs close (
 
 The downstreams continue to make requests, but Envoy will send 504s - it will refuse the connection.
 
+Wait for a minute or two and you will see that Envoy periodically tries to close the circuitbreaker, to probe whether the 
+upstream performance is now able to manage the offered load.
+
 ### Restoring normal upstream performance, circuit breakers close
 
 If we restore the upstream to its normal performance, then the circruit breakers close and the requests flow again. 
 http://localhost:9092/config?latency=1&parallelism=1000
+
+## Bring the demo down
+
+Run 
+
+```
+ docker-compose down
+```

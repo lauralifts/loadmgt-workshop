@@ -5,7 +5,7 @@ Bring down any other docker-compose environment running as part of this workshop
 Bring this environment up by running 
 
 ```
- docker-compose up --build
+ docker-compose up --build -d
 ```
 
 ## Prioritisation
@@ -72,3 +72,11 @@ That should be sufficient to trip the default priority request circuit breaker: 
 Now let's try to make some high priority requests. [100 qps of high priority requests](http://localhost:9095/config?hipri=true&http_rate=100&http_max_parallelism=100).
 
 We should see the hipri requests largely succeeding and more of the default priority requests being loadshed, as the default pririty circuit breaker opens.
+
+## Bring the demo down
+
+Run 
+
+```
+ docker-compose down
+```

@@ -39,7 +39,7 @@ descriptors:
 Bring this environment up by running 
 
 ```
- docker-compose up --buil -d
+ docker-compose up --build -d
 ```
 
 ## Generating gRPC traffic

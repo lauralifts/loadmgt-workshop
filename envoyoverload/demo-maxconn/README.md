@@ -30,9 +30,7 @@ Bring this environment up by running
 
 Open [Grafana](http://localhost:3000/d/workshop/load-management-workshop?orgId=1&refresh=5s) and expand the Envoy row.
 
-Start sending gRPC requests:
-[http://localhost:9094/config?grpc_rate=1000&grpc_max_parallelism=1000]([http://localhost:9094/config?grpc_rate=1000&grpc_max_parallelism=1000](http://localhost:9094/config?grpc_rate=10&grpc_max_parallelism=10)
-)
+Start sending gRPC requests: http://localhost:9094/config?grpc_rate=10&grpc_max_parallelism=10
 
 You should see the graph of Envoy connections increase and level off at 1000 connections. You should see 
 an equal number of incoming requests to the upstreams as outgoing requests at the downstreams. 
@@ -41,8 +39,16 @@ There is no loadshedding (or only minor loadshedding)
 Now increase the parallelism of your requests to 1100:
 http://localhost:9094/config?grpc_rate=2000&grpc_max_parallelism=1100
 
-Now you should begin to see connections being rejected. You won't see requests being rejected; the downstreams will
-just send requests over the connections that are available to them.
+Now you should begin to see connections being rejected. You won't see requests being rejected in the Envoy metrics; the downstreams 
+will just send more requests over the connections that are available to them.
 
 However, you will see the graph of rejected downstream connections increase above zero, indicating that
 Envoy is performing throttling here.
+
+## Bring the demo down
+
+Run 
+
+```
+ docker-compose down
+```

@@ -1,4 +1,4 @@
-# Basic Admission Control demo
+# Admission Control demo
 
 In this demo we have one upstream, 5 downstream, and one Envoy.
 There is one upstream. 

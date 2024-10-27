@@ -39,18 +39,25 @@ descriptors:
 Bring this environment up by running 
 
 ```
- docker-compose up --build --remove-orphans -d
+ docker-compose up --buil -d
 ```
 
 ## Generating gRPC traffic
 
-You can generate some traffic : [100 qps](http://localhost:9094/config?grpc_rate=100&grpc_max_parallelism=2000). This sends 100 requests per second to the upstream via Envoy.
+You can generate some traffic: http://localhost:9094/config?grpc_rate=100&grpc_max_parallelism=2000
+This sends 100 requests per second to the upstream via Envoy.
 
 As usual, open [Grafana](http://localhost:3000/d/workshop/load-management-workshop?orgId=1&refresh=5s).
 
-You will see 100 requests of gRPC traffic being served. If you look at the gRPC status codes graphed from the perspetive of the downstreams you will see 
+You will see 100 requests of gRPC traffic being served. If you look at the gRPC status codes graphed from the perspective of the downstreams you will see 
 that most requests are geting a 'Unavailable' status code.
 The `Envoy ratelimit over limit` graph will also show that many requests are over limit.
+
+The ratelimit service has a status page at http://localhost:6070/
+Open it and check:
+ * stats at http://localhost:6070/stats/
+ * config at http://localhost:6070/rlconfig
+
 
 ## Failure mode deny
 

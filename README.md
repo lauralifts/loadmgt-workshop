@@ -34,8 +34,8 @@ Grafana on [http://localhost:3000](http://localhost:3000).
 The demos use some simple clients and servers - you'll find the Go source code for these in the [code](./code) 
 directory here. The containers for the demos are built when running them, so you can change the source code and
 have the changes take effect in your demo (if you want to try something the demo doesn't do).
-The same upstreams/downstreams are used throughout the sequence of demos, so if you change something you could break other demos 
-- if that's the case, you can just `git stash` your local changes and revert to the published code.
+The same upstreams/downstreams are used throughout the sequence of demos, so if you change something you could break 
+other demos - if that's the case, you can just `git stash` your local changes and revert to the published code.
 
 ## Sections
 

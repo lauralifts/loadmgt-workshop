@@ -44,6 +44,7 @@ For the upstreams, you can control request latency, available parallelism, and e
 ## Sections
 
 It is best to follow these in order, if possible, but there aren't really any dependencies between sections.
+Clone this repo now onto your machine to run the demos.
 
 [Envoy Circuit Breaking](/circuitbreaking/README.md): this section demonstrates how Envoy's circuitbreaking can be used to avoid cascading failures, based on connection count, concurrent requests, or concurrent retries.
 
@@ -61,8 +62,10 @@ Envoy itself from performance degradation in the face of excessive load.
 
 ## Finished the demos?
 
-Consider how you might combine the functions seen in each section to achieve your load-management goals.
-How would you go about monitoring your Envoys? What, if anything, should be your response when Envoy begins to shed load?
+* Consider how you might combine the functions seen in each section to achieve your load-management goals.
+* How would you go about monitoring your Envoys for each setup? 
+* What, if anything, should be your response when Envoy begins to shed load?
+
 You can use the building blocks here to create your own scenarios. 
 
 ## Want to go deeper into Envoy's capabilities?

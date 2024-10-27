@@ -61,7 +61,7 @@ be too low for some large-scale systems.
 
 ## Links
 
-https://www.alibabacloud.com/blog/brief-analysis-of-envoy-adaptive-concurrency-filter_600658
-
-https://klaviyo.tech/adaptive-concurrency-control-for-mixed-analytical-workloads-51350439aeec
+* [Envoy adaptive concurrency](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/adaptive_concurrency_filter)
+* https://www.alibabacloud.com/blog/brief-analysis-of-envoy-adaptive-concurrency-filter_600658
+* https://klaviyo.tech/adaptive-concurrency-control-for-mixed-analytical-workloads-51350439aeec
 

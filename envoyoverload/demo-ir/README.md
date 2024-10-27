@@ -46,12 +46,11 @@ Start sending gRPC requests:
 You should see all requests proceeding.
 
 Now, change the contents of `res.txt` to 0.9.
-You will have to also restart the Envoy container to pick that up (you can also just restart everything).
+You will have to also restart the Envoy container to pick that up.
 
-Running `docker-compose restart envoy` will work.
-
-Start sending gRPC requests again.
-[http://localhost:9094/config?grpc_rate=1000&grpc_max_parallelism=1000](http://localhost:9094/config?grpc_rate=1000&grpc_max_parallelism=1000)
+```
+docker-compose restart envoy
+```
 
 In Grafana you should now see 
  * Injected resource pressure at 90
@@ -59,8 +58,11 @@ In Grafana you should now see
  * Requests downstream but none upstream
 
 Now, change the contents of `res.txt` to 0.75 - between the scaling threshold and the saturation threshold.
-Restart Envoy, and start sending gRPC requests again.
-[http://localhost:9094/config?grpc_rate=1000&grpc_max_parallelism=1000](http://localhost:9094/config?grpc_rate=1000&grpc_max_parallelism=1000)
+Restart Envoy
+
+```
+docker-compose restart envoy
+```
 
 Now you should see that stop accepting requests is at around 33%, and Envoy does shed some requests, and you can see this because the downstream requests are higher than upstream.
 
@@ -82,3 +84,12 @@ This can be useful for exempting high priority traffic from overload manager loa
 This is a particularly good idea for healthcheck traffic - in an overload state, if you shed your healthcheck 
 traffic you may end up in a state where your orchestration service constantly restarts your proxies, which
 further reduces your capacity and can contribute to a cascading failure scenario or metastable failure state.
+
+## Bring the demo down
+
+Run 
+
+```
+ docker-compose down
+```
+

@@ -32,14 +32,14 @@ becoming a [metastable failure](https://charap.co/metastable-failures-in-the-wil
 ### Sending HTTP traffic
 
 Let's send some HTTP traffic through Envoy.
-Use the config endpoint of our downstream load-generator program: [config - 100 qps](http://localhost:9094/config?http_rate=100&http_max_parallelism=100)
+Use the config endpoint of our downstream load-generator program: http://localhost:9094/config?http_rate=100&http_max_parallelism=100
 
 You should see in the [Grafana dashboard](http://localhost:3000/d/workshop/load-management-workshop?orgId=1&refresh=5s) that all CBs are closed,
 that all requests are making it to the upstream and are succeeding.
 
 ### Upstreams have a high error rate and CBs open
 
-Now, let's change the behaviour of the upstream: [20% error rate and 1000ms latency](http://localhost:9092/config?latency=1000&error_rate=0.2)
+Now, let's change the behaviour of the upstream: http://localhost:9092/config?latency=1000&error_rate=0.2
 With 100 QPS sent this should consume the retry budget and cause the retry-based circuitbreaker to open, cutting off traffic to the upstream.
 
 ### Error rate returns to normal and CBs close

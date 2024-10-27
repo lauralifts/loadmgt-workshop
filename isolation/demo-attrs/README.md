@@ -102,6 +102,9 @@ to see what values the ratelimit service receives.
 Experiment with changing the the ratelimit configuration in `ratelimit/config/config.yaml`.
 You will need to restart the ratelimit service each time.
 
+It's useful to watch the debug logs from the ratelimit service as you do this.
+You can also see the current ratelimit config: http://localhost:6070/rlconfig
+
 Some examples of ratelimit service config can be found [here](https://github.com/envoyproxy/ratelimit?tab=readme-ov-file#examples).
 
 ## Shutting the environment down

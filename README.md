@@ -26,6 +26,8 @@ Dashboards are provided for you, but you may want to add your own - feel free to
 Grafana's UI is reasonably intuitive (ask for help if you need it).
 Some familiarity with Prometheus' query language, [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/) may help - the docs have a number of examples - again, ask if you need help.
 
+Note that Grafana mounts a separate dashboards volume for each demo, so any custom dashboards won't carry over between demos.
+
 When running any demo, Prometheus will be available on [http://localhost:9090](http://localhost:9090) and
 Grafana on [http://localhost:3000](http://localhost:3000). You can use Prometheus for adhoc graphic and exploring metrics.
 

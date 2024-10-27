@@ -94,10 +94,19 @@ For example
                   - {remote_address: {}}
 ```
 
-Restart envoy as usual - `docker-compose restart envoy` and observe the logs for the ratelimit service.
+Restart envoy as usual with 
 
-Either use the Docker Desktop UI or run `docker-compose logs ratelimit`
-to see what values the ratelimit service receives.
+```
+docker-compose restart envoy
+```
+
+Now observe the logs for the ratelimit service. Either use the Docker Desktop UI or run 
+
+```
+docker-compose logs ratelimit
+```
+
+to see what values the ratelimit service receives and what it does.
 
 Experiment with changing the the ratelimit configuration in `ratelimit/config/config.yaml`.
 You will need to restart the ratelimit service each time.

@@ -50,17 +50,26 @@ Note that admission control is not actually enabled yet - see the `admission_con
 
 ## Sending moderate load to the upstream
 
-We start off with each downstream sending 50 GRPC requests per second, which the upstream can serve.
+We start off with each downstream sending 50 gRPC requests per second, which the upstream can serve.
+
+The downstreams are configured to do this via their environment - see `docker-compose.yaml`. 
+Ports are not mapped to the local host because this doesn't work reliably in all versions of docker-compose.
+
 Look at the [Grafana dash](http://localhost:3000/d/workshop/load-management-workshop?orgId=1&refresh=5s) and see 
 that the requests are being served OK - you should see 250 rps being served with 200-class response codes.
 
-Each individual downstream sends 50 requests per second, so total traffic is 50 requests per second.
+Each individual downstream sends 50 requests per second, so total traffic is 250 requests per second.
 
 ## Upstream error rate spikes 
 
-Now we set the upstream error rate to 20%: [20% error rate and 1000ms latency](http://localhost:9092/config?latency=100&error_rate=0.2)
-Wait for a while for metrics to update and check the Grafana dashboard. You should see that the downstream is now returning about 20% error codes, with status code 13.
-These come from the upstream. 
+Now we set the upstream error rate to 20% with 100ms latency: http://localhost:9092/config?latency=100&error_rate=0.2
+Wait for a while for metrics to update and check the Grafana dashboard. 
+
+You should see that the downstream is now receiving about 20% error codes, with status code 13 - Internal Error - see [gRPC status codes](https://grpc.github.io/grpc/core/md_doc_statuscodes.html).
+
+Remember that gRPC requests all show as HTTP 200s in the Envoy HTTP filter metrics, but you can see the gRPC status codes in the downstream metrics. 
+
+These status 13 codes come from the upstream. 
 
 ## Enable admission control 
 

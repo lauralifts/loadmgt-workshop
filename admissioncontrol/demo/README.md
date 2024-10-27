@@ -92,17 +92,20 @@ The rejection probability is around 20%, similar to the error rate.
 
 ## Increase error rate
 
-Now we increase the error rate to 100%: [100% error rate and 1000ms latency](http://localhost:9092/config?latency=100&error_rate=1.0)
-Watch, and you will see the rate of status code 13s increase - this is the change we just made taking effect.
+Now we increase the error rate to 100%: http://localhost:9092/config?latency=100&error_rate=1.0
+
+Watch, and you will see the rate of gRPC status code 13s increase - this is the change we just made taking effect.
 Soon after, Envoy will start to greatly increase the number of code 14s, applying throttling.
 
 The configuration above specifies that the maximum rejection probability is 95%. 
-We are sending 250 requests per second, which are all erroring - so we should end up with around 237 code 14s per second - these are throttled - and the remainder, 
+
+We are sending 250 requests per second, which are all erroring - so we should end up with around 237 code 14s per second - these 
+are throttled - and the remainder, 
 about 5% of the traffic, actually making it through to the upstream and receving a code 13 response.
 
 ## Reduce error rate to 50% and modify rps_threshold
 
-Now we increase the error rate to 50%: [50% error rate and 100ms latency](http://localhost:9092/config?latency=100&error_rate=0.5)
+Now we increase the error rate to 50%: http://localhost:9092/config?latency=100&error_rate=0.5
 We see Envoy reduce the rate of throttling and allow more through to the upstreams. 
 
 Now let's experiment with modifying the `rps_threshold` parameter.
@@ -146,11 +149,11 @@ Run `docker-compose restart envoy` so that Envoy will pick up these changes.
 
 The request success rate is currently less than the threshold, so you will observe throttling.
 
-Let's change the error rate to something under 20%: [10% error rate and 1000ms latency](http://localhost:9092/config?latency=100&error_rate=0.1)
+Let's change the error rate to something under 20%: http://localhost:9092/config?latency=100&error_rate=0.1
 
 Watch the graphs in Grafana: the throttling should stop, because the current error rate is below (1 - sr_threshold).
 
- Let's start throttling again by increasing the error rate above `sr_threshold`: [25% error rate and 1000ms latency](http://localhost:9092/config?latency=100&error_rate=0.25)
+ Let's start throttling again by increasing the error rate above `sr_threshold`: http://localhost:9092/config?latency=100&error_rate=0.25
 
 ## Modifying aggression
 
@@ -168,5 +171,3 @@ Let's change the aggression parameter
 Run `docker-compose restart envoy` so that Envoy will pick up these changes.
 
 Wait for the change to take effect - you should see the throttling rate - code 14 responses - increase significantly, to around 50% of the offered traffic.
-
-TODO observe different upstream performances

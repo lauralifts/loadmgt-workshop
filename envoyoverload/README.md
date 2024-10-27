@@ -4,7 +4,7 @@
 ## What it is and how it works
 
 The other sections in this workshop focus on how Envoy can protect upstream services from overload.
-However, Envoy itself can also become overloaded. Envoy's Overload Manager is designed to help
+However, Envoy itself can also become overloaded. Envoy's [Overload Manager](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/operations/overload_manager) is designed to help
 protect Envoy from overload. 
 
 Currently, extensions exist to trigger protection measures based on utilisation of CPU (linux only), downstream connections, 

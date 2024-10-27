@@ -5,7 +5,7 @@ Bring down any other docker-compose environment running as part of this workshop
 Bring this environment up by running 
 
 ```
- docker-compose up --build
+ docker-compose up --build -d
 ```
 
 ## Basic request-based circuitbreaking config
@@ -13,9 +13,7 @@ Bring this environment up by running
 Envoy here is configured with two sets of listeners and two backend clusters.
 One set serves HTTP requests and one set gRPC.
 
-There is a [Grafana dashboard](http://localhost:3000/d/workshop/load-management-workshop?orgId=1&refresh=5s) with visualisations showing requests upstream and downstream, and the state of its circuitbreakers.
-
-The HTTP cluster has the following circuit breaker config:
+The HTTP cluster has the following circuit breaker config (see `envoy.yaml`).
 
 ```
     circuit_breakers:
@@ -28,21 +26,23 @@ The HTTP cluster has the following circuit breaker config:
         track_remaining: true
 ```
 
+There is a [Grafana dashboard](http://localhost:3000/d/workshop/load-management-workshop?orgId=1&refresh=5s) with visualisations showing requests upstream and downstream, and the state of its circuitbreakers.
+
 ### Normal traffic with no circuitbreaking
 
 Let's send some HTTP traffic through Envoy.
-Use the config endpoint of our downstream load-generator program: [100 qps and high parallelism](http://localhost:9094/config?http_rate=100&http_max_parallelism=2000)
+Use the config endpoint of our downstream load-generator program: http://localhost:9094/config?http_rate=100&http_max_parallelism=2000
 
 You should see in Grafana that the request-based CB is closed - i.e. requests are flowing - and that there are many requests and connections left before the CB would close. 
 
 ### Degraded upstream performance and circuitbreaking
 
-Now, let's change the performance of the upstream significantly for the worse: [100msec latency and parallelism 1](http://localhost:9092/config?latency=100&parallelism=1)
+Now, let's change the performance of the upstream significantly for the worse (only one request at a time): http://localhost:9092/config?latency=100&parallelism=1
 
 Now the server can only handle 10 qps, with each request taking 100ms to process, and we are sending 100 qps. 
 The connections and requests quickly pile up, and we quickly see the CBs close (in Grafana). 
 
-The downstreams continue to make requests, but Envoy will send 504s.
+The downstreams continue to make requests, but Envoy will send 504s - it will refuse the connection.
 
 ### Restoring normal upstream performance, circuit breakers close
 

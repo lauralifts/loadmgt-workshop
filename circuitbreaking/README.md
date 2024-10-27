@@ -40,15 +40,13 @@ connection-oriented circuitbreaking will be sufficient, but it depends on the re
 See 
 https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/circuit_breaker.proto#envoy-v3-api-msg-config-cluster-v3-circuitbreakers
 
+Note that Envoy circuitbreaking is done based on upstream cluster status (as is choice of loadbalancing algorithm), rather than
+HTTP or connection filter chain behaviour, which the majority of Envoy configuration we will see is.
 
 ## Demos 
  * [Basic request-based and connection based circuitbreaking](./demo-basic/README.md)
  * [Circuitbreaking on retries](./demo-retries/README.md)
  * [Prioritising requests](./demo-prios/README.md)
-
-TODO: demo with multiple upstreams, to demonstrate what is per cluster and what is per host
-TODO: noisy neighbour demo
-TODO: disabling circuitbreaking
 
 ## Useful Links
 

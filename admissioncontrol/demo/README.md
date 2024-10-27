@@ -171,3 +171,12 @@ Let's change the aggression parameter
 Run `docker-compose restart envoy` so that Envoy will pick up these changes.
 
 Wait for the change to take effect - you should see the throttling rate - code 14 responses - increase significantly, to around 50% of the offered traffic.
+
+
+## Bring the demo down
+
+Run 
+
+```
+ docker-compose down
+```

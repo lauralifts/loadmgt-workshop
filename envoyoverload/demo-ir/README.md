@@ -64,14 +64,13 @@ Restart Envoy
 docker-compose restart envoy
 ```
 
-Now you should see that stop accepting requests is at around 33%, and Envoy does shed some requests, and you can see this because the downstream requests are higher than upstream.
+Now you should see that `stop accepting requests` is at around 33%, and Envoy does shed some requests, and you can see this because the downstream requests are higher than upstream.
 
 Note that loadshed gRPC requests will have HTTP 200 responses in the Envoy graphs - but the downstream graphs will show you ther gRPC status codes.
 
 ## Bypassing the overload manager
 
-Send HTTP requests.
-[http://localhost:9094/config?http_rate=100&http_max_parallelism=10](http://localhost:9094/config?http_rate=100&http_max_parallelism=100)
+Send HTTP requests: http://localhost:9094/config?http_rate=100&http_max_parallelism=100
 
 Wait a few seconds and these will appear on the Envoy graphs.
 Unlike the gRPC requests, you should notice that the HTTP requests are not throttled - the upstream request count is the same as the downstream.

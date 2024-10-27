@@ -25,7 +25,7 @@ Make sure any previous demos from this workshop have been stopped.
 
 Bring this environment up by running 
 ```
- docker-compose up --build
+ docker-compose up --build -d
 ```
 
 Open [Grafana](http://localhost:3000/d/workshop/load-management-workshop?orgId=1&refresh=5s) and expand the Envoy row.

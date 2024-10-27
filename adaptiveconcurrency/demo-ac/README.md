@@ -32,9 +32,9 @@ The adaptive concurrency configuration is here:
                 runtime_key: "adaptive_concurrency.enabled"
 ```
 
-Let's start by sending [3 qps](http://localhost:9094/config?http_rate=3&http_max_parallelism=100) to the upstream.
+Let's start by sending 3 requests per second to the upstream: http://localhost:9094/config?http_rate=3&http_max_parallelism=100
 The upstream is configured to respond to requests at 100ms latency, and to increase its latency as a square of the number of current inflight requests.
-So at  qps, there should be little to no latency increase.
+So at 3 qps, there should be little to no latency increase.
 
 Use the [Grafana dashboard](http://localhost:3000/d/workshop/load-management-workshop?orgId=1&refresh=5s) to see the traffic.
 
@@ -44,17 +44,15 @@ You should see:
  * No throttling - same number of downstream requests as upstream, and all status 2xx
  * You should see p50 latency is around 100 milliseconds
 
- Now send [50 qps](http://localhost:9094/config?http_rate=50&http_max_parallelism=100) to the upstream.
+ Now send 50 requests per second: http://localhost:9094/config?http_rate=50&http_max_parallelism=100
 
 You should see:
- * Massive increase in latency
- * Requests still succeeding, but very slow
-
+ * A massive increase in latency
+ * Some requests still succeeding, but very slowly
 
 ## Enabling adaptive concurrency
 
 Go back to sending [3 qps](http://localhost:9094/config?http_rate=3&http_max_parallelism=100) to the upstream.
-
 
 Now enable adaptive concurrency by changing your `envoy.yaml`
 

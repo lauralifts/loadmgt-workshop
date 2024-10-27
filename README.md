@@ -39,12 +39,17 @@ other demos - if that's the case, you can just `git stash` your local changes an
 
 The upstreams and downstreams are configurable in various ways, based on environment settings and config endpoints.
 For the downstreams, the control rates at which HTTP or [gRPC](https://grpc.io/) requests are sent, as well as parallelism.
-For the upstreams, you can control request latency, available parallelism, and error rates.
+For the upstreams, you can control request latency, available parallelism, and error rates. There are lots of 
+examples of this throughout the demos.
 
 ## Sections
 
 It is best to follow these in order, if possible, but there aren't really any dependencies between sections.
-Clone this repo now onto your machine to run the demos.
+Clone this repo now onto your machine to run the demos:
+
+```
+git clone https://github.com/lauralifts/loadmgt-workshop.git
+```
 
 [Envoy Circuit Breaking](/circuitbreaking/README.md): this section demonstrates how Envoy's circuitbreaking can be used to avoid cascading failures, based on connection count, concurrent requests, or concurrent retries.
 

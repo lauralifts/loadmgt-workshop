@@ -31,15 +31,19 @@ Grafana on [http://localhost:3000](http://localhost:3000).
 
 ## Provided upstream/downstream code samples
 
-The demos use some simple clients and servers - you'll find the Go source code for these in the [code](./code) 
+The demos use some very simple clients and servers - you'll find the Go source code for these in the [code](./code) 
 directory here. The containers for the demos are built when running them, so you can change the source code and
 have the changes take effect in your demo (if you want to try something the demo doesn't do).
 The same upstreams/downstreams are used throughout the sequence of demos, so if you change something you could break 
 other demos - if that's the case, you can just `git stash` your local changes and revert to the published code.
 
+The upstreams and downstreams are configurable in various ways, based on environment settings and config endpoints.
+For the downstreams, the control rates at which HTTP or [gRPC](https://grpc.io/) requests are sent, as well as parallelism.
+For the upstreams, you can control request latency, available parallelism, and error rates.
+
 ## Sections
 
-It is best to follow these in order, if possible.
+It is best to follow these in order, if possible, but there aren't really any dependencies between sections.
 
 [Envoy Circuit Breaking](/circuitbreaking/README.md): this section demonstrates how Envoy's circuitbreaking can be used to avoid cascading failures, based on connection count, concurrent requests, or concurrent retries.
 
@@ -59,6 +63,7 @@ Envoy itself from performance degradation in the face of excessive load.
 
 Consider how you might combine the functions seen in each section to achieve your load-management goals.
 How would you go about monitoring your Envoys? What, if anything, should be your response when Envoy begins to shed load?
+You can use the building blocks here to create your own scenarios. 
 
 ## Want to go deeper into Envoy's capabilities?
 

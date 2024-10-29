@@ -29,6 +29,8 @@ This gives a mechanism for reducing traffic to upstreams when they are experienc
 can often be the result of some transient problem. Avoiding a retry storm prevents a short-lived issue from 
 becoming a [metastable failure](https://charap.co/metastable-failures-in-the-wild/).
 
+When the retry CB opens what it means is that it won't do any more automatic retries - so any request that gets a 500 will pass that downstream. So in this demo, you will see the downstreams receiving a mixture of 200s - requests that were successful initially - and 500s, which are requests that failed, and which Envoy declines to retry because the circuitbreaker is open.
+
 ### Sending HTTP traffic
 
 Let's send some HTTP traffic through Envoy.
